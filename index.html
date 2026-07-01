@@ -38,11 +38,13 @@
 
 *{ box-sizing:border-box; }
 html,body{ height:100%; }
+html{ font-size: 19px; }
 body{
   margin:0;
   background: var(--navy-deep);
   color: var(--cream);
   font-family: var(--font-body);
+  font-size: 1.08rem;
   overflow:hidden;
   -webkit-font-smoothing:antialiased;
 }
@@ -169,10 +171,10 @@ h1.headline{
 }
 h1.headline em{ color: var(--cyan-soft); font-style:normal; }
 .dek{
-  font-size: clamp(1rem, 1.5vw, 1.2rem);
-  color: rgba(250,246,236,0.75);
+  font-size: clamp(1.18rem, 1.7vw, 1.4rem);
+  color: rgba(250,246,236,0.8);
   font-weight:400;
-  max-width: 720px;
+  max-width: 760px;
   line-height:1.6;
   margin:0;
   opacity:0; transform: translateY(14px);
@@ -295,14 +297,14 @@ h1.headline em{ color: var(--cyan-soft); font-style:normal; }
 }
 .index-card .chunk-text{
   font-family: var(--font-hand);
-  font-size: 1.6rem;
+  font-size: 1.85rem;
   font-weight:600;
   color: var(--navy-brand);
   line-height:1.4;
 }
 .index-card .chunk-label{
   display:block;
-  font-family: var(--font-display); font-size:.62rem; letter-spacing:.14em; text-transform:uppercase;
+  font-family: var(--font-display); font-size:.74rem; letter-spacing:.14em; text-transform:uppercase;
   color: var(--ink-soft); margin-bottom:8px; font-weight:700;
 }
 
@@ -344,7 +346,7 @@ h1.headline em{ color: var(--cyan-soft); font-style:normal; }
 }
 .quote-slide blockquote .mark{ color: var(--amber); }
 .quote-slide cite{
-  font-family: var(--font-body); font-style:normal; font-size:.85rem;
+  font-family: var(--font-body); font-style:normal; font-size:1rem;
   letter-spacing:.08em; text-transform:uppercase; color: var(--cyan-soft);
 }
 .quote-bigmark{
@@ -371,8 +373,8 @@ h1.headline em{ color: var(--cyan-soft); font-style:normal; }
   border-radius: var(--radius-card);
   padding: 22px 22px;
 }
-.method-card h3{ font-family: var(--font-display); font-size:1rem; margin:0 0 8px; color: var(--cyan-soft); }
-.method-card p{ font-size:.9rem; line-height:1.6; color: rgba(250,246,236,.78); margin:0; }
+.method-card h3{ font-family: var(--font-display); font-size:1.18rem; margin:0 0 8px; color: var(--cyan-soft); }
+.method-card p{ font-size:1.05rem; line-height:1.65; color: rgba(250,246,236,.82); margin:0; }
 .method-card .ico{ font-size:1.6rem; margin-bottom:10px; display:block; }
 
 /* Photo analysis slides */
@@ -387,6 +389,7 @@ h1.headline em{ color: var(--cyan-soft); font-style:normal; }
   border: 6px solid var(--cream);
 }
 .photo-frame .placeholder-icon{ font-size: 4.2rem; opacity:.85; }
+.photo-frame .photo-img{ width:100%; height:100%; object-fit:cover; display:block; }
 .photo-frame .cap{
   position:absolute; bottom:0; left:0; right:0;
   background: rgba(16,23,41,0.75);
@@ -395,7 +398,7 @@ h1.headline em{ color: var(--cyan-soft); font-style:normal; }
   letter-spacing:.08em; text-transform:uppercase; padding: 10px 14px;
 }
 .photo-analysis .prompt-q{
-  font-family: var(--font-hand); font-size: 1.7rem; color: var(--amber);
+  font-family: var(--font-hand); font-size: 1.95rem; color: var(--amber);
   margin: 18px 0 16px;
 }
 .reveal-btn{ margin-bottom:18px; }
@@ -408,18 +411,18 @@ h1.headline em{ color: var(--cyan-soft); font-style:normal; }
 .chunk-answers .index-card{ transform: rotate(-1.4deg); padding: 14px 18px; }
 .chunk-answers .index-card:nth-child(2){ transform: rotate(1deg); }
 .chunk-answers .index-card:nth-child(3){ transform: rotate(-0.6deg); }
-.chunk-answers .chunk-text{ font-size:1.25rem; }
+.chunk-answers .chunk-text{ font-size:1.45rem; }
 
 /* Contrast slide */
 .contrast-wrap{ display:grid; grid-template-columns: 1fr auto 1fr; gap:26px; align-items:center; width:100%; margin-top:20px; }
 .contrast-col{ background: rgba(250,246,236,0.05); border:1px solid var(--line); border-radius: var(--radius-card); padding:24px; }
-.contrast-col h4{ font-family: var(--font-display); font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; margin:0 0 16px; }
+.contrast-col h4{ font-family: var(--font-display); font-size:.92rem; letter-spacing:.1em; text-transform:uppercase; margin:0 0 16px; }
 .contrast-col.traditional h4{ color: rgba(250,246,236,.55); }
 .contrast-col.chunked h4{ color: var(--cyan-soft); }
 .token-row{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
 .token{
-  font-family: var(--font-display); font-size:.85rem; font-weight:600;
-  padding:7px 12px; border-radius:6px; background: rgba(250,246,236,.07); color: rgba(250,246,236,.65);
+  font-family: var(--font-display); font-size:1rem; font-weight:600;
+  padding:8px 14px; border-radius:6px; background: rgba(250,246,236,.07); color: rgba(250,246,236,.68);
   border:1px dashed rgba(250,246,236,.25);
 }
 .token.chunkblock{
@@ -430,8 +433,8 @@ h1.headline em{ color: var(--cyan-soft); font-style:normal; }
 
 /* categories grid */
 .cat-card{ background: var(--cream); color: var(--ink); border-radius: var(--radius-card); padding:20px; box-shadow: var(--shadow-card); }
-.cat-card h4{ font-family: var(--font-display); font-size:.95rem; margin:0 0 10px; color: var(--navy-brand); }
-.cat-card ul{ margin:0; padding-left:18px; font-size:.86rem; line-height:1.7; color: var(--ink-soft); }
+.cat-card h4{ font-family: var(--font-display); font-size:1.12rem; margin:0 0 10px; color: var(--navy-brand); }
+.cat-card ul{ margin:0; padding-left:18px; font-size:1.02rem; line-height:1.75; color: var(--ink-soft); }
 
 /* Participation / discussion prompt */
 .participation-slide{ text-align:center; align-items:center; }
@@ -446,7 +449,7 @@ h1.headline em{ color: var(--cyan-soft); font-style:normal; }
   transform: rotate(-1deg);
   opacity:0; animation: rise .7s var(--ease) .24s forwards;
 }
-.participation-slide .prompt-card p{ font-family: var(--font-hand); font-size:1.9rem; line-height:1.35; color: var(--navy-brand); margin:0; }
+.participation-slide .prompt-card p{ font-family: var(--font-hand); font-size:2.15rem; line-height:1.35; color: var(--navy-brand); margin:0; }
 
 /* mini timer badge inline */
 .mini-timer{ display:inline-flex; align-items:center; gap:8px; font-family: var(--font-display); font-size:.75rem; letter-spacing:.06em; text-transform:uppercase; color: var(--amber); margin-top:22px; opacity:0; animation: rise .5s var(--ease) .4s forwards; }
@@ -470,18 +473,18 @@ h1.headline em{ color: var(--cyan-soft); font-style:normal; }
 }
 .timer-controls{ display:flex; flex-direction:column; gap:12px; }
 .timer-controls .row{ display:flex; gap:10px; }
-.timer-label{ font-family:var(--font-display); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color: var(--cyan-soft); margin-bottom:4px; }
+.timer-label{ font-family:var(--font-display); font-size:.88rem; letter-spacing:.14em; text-transform:uppercase; color: var(--cyan-soft); margin-bottom:4px; }
 
 /* Task steps list */
 .step-list{ list-style:none; margin:20px 0 0; padding:0; display:flex; flex-direction:column; gap:14px; width:100%; }
 .step-list li{ display:flex; gap:16px; align-items:flex-start; background: rgba(250,246,236,0.05); border:1px solid var(--line); border-radius: var(--radius-card); padding:16px 18px; }
-.step-list .step-num{ font-family: var(--font-display); font-weight:900; font-size:1.3rem; color: var(--amber); flex:none; width:32px; }
-.step-list .step-text{ font-size:.92rem; line-height:1.6; color: rgba(250,246,236,.85); }
+.step-list .step-num{ font-family: var(--font-display); font-weight:900; font-size:1.5rem; color: var(--amber); flex:none; width:36px; }
+.step-list .step-text{ font-size:1.1rem; line-height:1.65; color: rgba(250,246,236,.88); }
 .step-list .step-text b{ color: var(--cream); }
 
 /* Location chips */
 .chip-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
-.loc-chip{ font-family: var(--font-display); font-size:.78rem; font-weight:700; background: rgba(40,177,218,0.14); color: var(--cyan-soft); border:1px solid rgba(40,177,218,0.35); padding:8px 16px; border-radius:999px; }
+.loc-chip{ font-family: var(--font-display); font-size:.94rem; font-weight:700; background: rgba(40,177,218,0.14); color: var(--cyan-soft); border:1px solid rgba(40,177,218,0.35); padding:9px 18px; border-radius:999px; }
 
 /* takeaway / CTA */
 .cta-slide{ text-align:center; align-items:center; }
@@ -550,8 +553,8 @@ h1.headline em{ color: var(--cyan-soft); font-style:normal; }
 }
 .agenda-card:hover{ transform: translateY(-4px); background: rgba(250,246,236,0.09); }
 .agenda-card .a-num{ font-family: var(--font-display); font-size:2.2rem; font-weight:900; color: rgba(250,246,236,.15); position:absolute; top:8px; right:14px; }
-.agenda-card h4{ font-family: var(--font-display); font-size:.95rem; margin: 4px 0 8px; color: var(--cyan-soft); }
-.agenda-card p{ font-size:.8rem; color: rgba(250,246,236,.65); margin:0 0 10px; line-height:1.5; }
+.agenda-card h4{ font-family: var(--font-display); font-size:1.12rem; margin: 4px 0 8px; color: var(--cyan-soft); }
+.agenda-card p{ font-size:.98rem; color: rgba(250,246,236,.7); margin:0 0 10px; line-height:1.55; }
 .agenda-card .a-time{ font-family: var(--font-display); font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color: var(--amber); font-weight:700; }
 
 /* responsive */
@@ -721,8 +724,8 @@ a:focus-visible, button:focus-visible, .dot:focus-visible{
       <h1 class="headline">The Animal Shelter</h1>
       <div class="two-col">
         <div class="photo-frame">
-          <span class="placeholder-icon">🐶</span>
-          <div class="cap">One English Tepic · Conversation Club Archive</div>
+          <img class="photo-img" src="https://commons.wikimedia.org/wiki/Special:FilePath/Dog_Rescue_Centre_Samui,_Ko_Samui,_Thailand_(4570263053).jpg" alt="A dog at an animal shelter" loading="lazy">
+          <div class="cap">Illustrative photo · Animal Shelter</div>
         </div>
         <div>
           <p class="prompt-q">"What chunks would students need right here?"</p>
@@ -744,8 +747,8 @@ a:focus-visible, button:focus-visible, .dot:focus-visible{
       <h1 class="headline">Karaoke Night</h1>
       <div class="two-col">
         <div class="photo-frame">
-          <span class="placeholder-icon">🎤</span>
-          <div class="cap">One English Tepic · Conversation Club Archive</div>
+          <img class="photo-img" src="https://commons.wikimedia.org/wiki/Special:FilePath/USS_Ronald_Reagan_(CVN_76)_Sailors_participate_in_karaoke_night_hosted_by_Morale,_Welfare,_and_Recreation_(8480847).jpg" alt="People singing karaoke together" loading="lazy">
+          <div class="cap">Illustrative photo · Karaoke Night</div>
         </div>
         <div>
           <p class="prompt-q">"What chunks would students need right here?"</p>
@@ -767,8 +770,8 @@ a:focus-visible, button:focus-visible, .dot:focus-visible{
       <h1 class="headline">The Restaurant Table</h1>
       <div class="two-col">
         <div class="photo-frame">
-          <span class="placeholder-icon">🍽️</span>
-          <div class="cap">One English Tepic · Conversation Club Archive</div>
+          <img class="photo-img" src="https://commons.wikimedia.org/wiki/Special:FilePath/Casual_dining_at_timber_tables_and_metal_stools_at_cafe_in_Brisbane,_2022.jpg" alt="A restaurant table setting" loading="lazy">
+          <div class="cap">Illustrative photo · Restaurant Table</div>
         </div>
         <div>
           <p class="prompt-q">"What chunks would students need right here?"</p>
@@ -829,7 +832,7 @@ a:focus-visible, button:focus-visible, .dot:focus-visible{
           <div class="token-row">
             <span class="token">I</span><span class="token">+</span><span class="token">have</span><span class="token">+</span><span class="token">been</span><span class="token">+</span><span class="token">learning</span>
           </div>
-          <p style="font-size:.8rem; color:rgba(250,246,236,.55); margin:12px 0 0;">Assembled word-by-word, rule-by-rule — slow under pressure.</p>
+          <p style="font-size:.95rem; color:rgba(250,246,236,.6); margin:12px 0 0;">Assembled word-by-word, rule-by-rule — slow under pressure.</p>
         </div>
         <div class="vs-arrow">→</div>
         <div class="contrast-col chunked">
@@ -837,7 +840,7 @@ a:focus-visible, button:focus-visible, .dot:focus-visible{
           <div class="token-row">
             <span class="token chunkblock">I've been learning...</span><span class="token">+</span><span class="token chunkblock">[topic]</span><span class="token">+</span><span class="token chunkblock">for [X] years</span>
           </div>
-          <p style="font-size:.8rem; color:rgba(250,246,236,.7); margin:12px 0 0;">Retrieved whole and dropped into a slot — instant and natural.</p>
+          <p style="font-size:.95rem; color:rgba(250,246,236,.75); margin:12px 0 0;">Retrieved whole and dropped into a slot — instant and natural.</p>
         </div>
       </div>
     </div>
