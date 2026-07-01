@@ -1,351 +1,1291 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>One English Tepic: Advanced Lexical Chunks Workshop</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    
-    <style>
-        :root {
-            --bg-color: #0f172a; /* Slate 900 */
-            --text-main: #f8fafc;
-            --accent-blue: #38bdf8;
-            --accent-pink: #ec4899;
-            --accent-purple: #a855f7;
-            --accent-green: #22c55e;
-            --accent-yellow: #eab308;
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Language is Grammaticalised Lexis — One English Tepic Teacher Workshop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700;800;900&family=Montserrat:wght@300;400;500;600;700&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            overflow: hidden;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
-            width: 100vw;
-            height: 100vh;
-        }
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  --navy-deep:#101c33;
+  --navy:#1b2f5c;
+  --navy-brand:#24407a;
+  --cyan:#28b1da;
+  --cyan-soft:#7fdcef;
+  --cream:#faf6ec;
+  --paper:#f2ead6;
+  --amber:#f2a93b;
+  --amber-deep:#d98a1f;
+  --pin:#e2543d;
+  --ink:#16233f;
+  --ink-soft:#4a5875;
+  --line: rgba(250,246,236,0.14);
 
-        /* Canvas Background */
-        #particle-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            pointer-events: none;
-        }
+  --font-display: 'Red Hat Display', sans-serif;
+  --font-body: 'Montserrat', sans-serif;
+  --font-hand: 'Caveat', cursive;
 
-        #presentation {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-        
-        .slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: scale(0.9) translateY(40px);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 4rem;
-            box-sizing: border-box;
-            z-index: 1;
-        }
+  --radius-card: 6px;
+  --shadow-card: 0 18px 34px rgba(9,15,30,0.45), 0 3px 8px rgba(9,15,30,0.35);
+  --ease: cubic-bezier(.22,.9,.26,1);
+}
 
-        .slide.active {
-            opacity: 1;
-            visibility: visible;
-            transform: scale(1) translateY(0);
-            z-index: 10;
-        }
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  background: var(--navy-deep);
+  color: var(--cream);
+  font-family: var(--font-body);
+  overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{ background: var(--amber); color: var(--ink); }
 
-        .slide.prev-slide { transform: scale(1.1) translateX(-100px); }
-        .slide.next-slide { transform: scale(0.9) translateX(100px); }
+button{ font-family: inherit; cursor:pointer; }
 
-        .glass {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-        
-        .glass-panel {
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.18);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
+/* ============================================================
+   AMBIENT BACKGROUND
+   ============================================================ */
+.ambient-bg{
+  position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
+  background:
+    radial-gradient(ellipse 900px 600px at 12% 10%, rgba(40,177,218,0.16), transparent 60%),
+    radial-gradient(ellipse 800px 700px at 92% 88%, rgba(242,169,59,0.12), transparent 60%),
+    linear-gradient(160deg, var(--navy-deep) 0%, var(--navy) 55%, var(--navy-brand) 100%);
+}
+.ambient-bg::before{
+  content:"";
+  position:absolute; inset:0;
+  background-image: radial-gradient(rgba(250,246,236,0.05) 1px, transparent 1px);
+  background-size: 26px 26px;
+  opacity:.5;
+}
+.floating-chunk{
+  position:absolute;
+  font-family: var(--font-hand);
+  color: rgba(250,246,236,0.09);
+  font-size: 2.6rem;
+  font-weight:600;
+  white-space:nowrap;
+  animation: drift 34s linear infinite;
+  user-select:none;
+}
+@keyframes drift{
+  0%{ transform: translateY(0) rotate(0deg); }
+  50%{ transform: translateY(-38px) rotate(-3deg); }
+  100%{ transform: translateY(0) rotate(0deg); }
+}
 
-        .gradient-text {
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-        }
+/* ============================================================
+   CHROME / LAYOUT
+   ============================================================ */
+.deck{ position:relative; height:100vh; width:100vw; z-index:1; }
 
-        .bg-shape {
-            position: absolute;
-            filter: blur(100px);
-            opacity: 0.4;
-            z-index: -1;
-            border-radius: 50%;
-            animation: float 15s infinite alternate ease-in-out;
-        }
-        .shape-1 { top: -15%; left: -10%; width: 60vw; height: 60vw; background: radial-gradient(circle, var(--accent-blue) 0%, transparent 70%); }
-        .shape-2 { bottom: -15%; right: -10%; width: 50vw; height: 50vw; background: radial-gradient(circle, var(--accent-pink) 0%, transparent 70%); animation-delay: -5s; }
-        .shape-3 { top: 40%; left: 40%; width: 30vw; height: 30vw; background: radial-gradient(circle, var(--accent-purple) 0%, transparent 70%); animation-delay: -10s; opacity: 0.2;}
+.deck-chrome{
+  position:fixed; top:0; left:0; right:0; z-index:30;
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 18px 34px;
+  pointer-events:none;
+}
+.brand{
+  display:flex; align-items:center; gap:12px;
+  font-family: var(--font-display);
+  font-weight:700;
+  font-size: .95rem;
+  letter-spacing:.02em;
+  color: var(--cream);
+  opacity:.9;
+}
+.brand img{ height:30px; width:auto; filter: drop-shadow(0 2px 6px rgba(0,0,0,.4)); }
+.brand small{ display:block; font-family:var(--font-body); font-weight:500; font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; color: var(--cyan-soft); opacity:.9; }
 
-        @keyframes float {
-            0% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -50px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.9); }
-            100% { transform: translate(0, 0) scale(1); }
-        }
+.section-label{
+  font-family: var(--font-display);
+  font-size:.72rem; letter-spacing:.18em; text-transform:uppercase;
+  color: var(--cyan-soft);
+  background: rgba(250,246,236,0.06);
+  border:1px solid var(--line);
+  padding:7px 16px;
+  border-radius: 999px;
+  transition: all .4s var(--ease);
+}
 
-        .stagger-1 { animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0; }
-        .stagger-2 { animation: fadeInUp 0.6s ease forwards; animation-delay: 0.4s; opacity: 0; }
-        .stagger-3 { animation: fadeInUp 0.6s ease forwards; animation-delay: 0.6s; opacity: 0; }
-        
-        .active .stagger-1, .active .stagger-2, .active .stagger-3 { animation-play-state: running; }
+.slide-counter{
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
+  font-size:.85rem;
+  color: var(--cream);
+  opacity:.75;
+  display:flex; align-items:center; gap:4px;
+}
+.slide-counter #slideTotal{ opacity:.5; }
 
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+/* ============================================================
+   STAGE / SLIDES
+   ============================================================ */
+.stage{
+  position:relative; height:100vh; width:100vw;
+}
+.slide{
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding: 100px 8vw 90px;
+  opacity:0; visibility:hidden;
+  transform: translateY(24px) scale(.985);
+  transition: opacity .55s var(--ease), transform .6s var(--ease), visibility 0s linear .6s;
+  z-index:1;
+}
+.slide.active{
+  opacity:1; visibility:visible;
+  transform: translateY(0) scale(1);
+  transition: opacity .55s var(--ease), transform .6s var(--ease), visibility 0s;
+  z-index:5;
+}
 
-        .chunk-item {
-            opacity: 0;
-            transform: translateX(-30px);
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            max-height: 0;
-            overflow: hidden;
-            margin-bottom: 0;
-        }
-        .chunk-item.revealed {
-            opacity: 1;
-            transform: translateX(0);
-            max-height: 100px;
-            margin-bottom: 1rem;
-            padding-top: 1rem;
-            padding-bottom: 1rem;
-        }
+.slide-inner{ width:100%; max-width:1180px; margin:0 auto; }
 
-        .flip-card {
-            background-color: transparent;
-            perspective: 1000px;
-            cursor: pointer;
-        }
-        .flip-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.8s;
-            transform-style: preserve-3d;
-        }
-        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
-        .flip-card-front, .flip-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 1rem;
-            padding: 1.5rem;
-        }
-        .flip-card-front { background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2); }
-        .flip-card-back { background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); transform: rotateY(180deg); }
+.eyebrow{
+  font-family: var(--font-display);
+  font-size:.72rem; font-weight:700; letter-spacing:.24em; text-transform:uppercase;
+  color: var(--amber);
+  margin: 0 0 14px;
+  opacity:0; transform: translateY(10px);
+}
+h1.headline{
+  font-family: var(--font-display);
+  font-weight:800;
+  font-size: clamp(2.1rem, 4.4vw, 3.6rem);
+  line-height:1.06;
+  margin: 0 0 18px;
+  color: var(--cream);
+  opacity:0; transform: translateY(16px);
+}
+h1.headline em{ color: var(--cyan-soft); font-style:normal; }
+.dek{
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  color: rgba(250,246,236,0.75);
+  font-weight:400;
+  max-width: 720px;
+  line-height:1.6;
+  margin:0;
+  opacity:0; transform: translateY(14px);
+}
+.slide.active .eyebrow{ animation: rise .6s var(--ease) .15s forwards; }
+.slide.active h1.headline{ animation: rise .7s var(--ease) .25s forwards; }
+.slide.active .dek{ animation: rise .7s var(--ease) .38s forwards; }
+@keyframes rise{ to{ opacity:1; transform:translateY(0); } }
 
-        .timer-circle {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 4px solid var(--glass-border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            font-weight: bold;
-            font-family: monospace;
-            background: rgba(0,0,0,0.3);
-            position: relative;
-        }
-        
-        #controls { z-index: 60; position: fixed; bottom: 2rem; right: 2rem; display: flex; gap: 1rem; background: rgba(0,0,0,0.4); padding: 0.5rem; border-radius: 3rem; backdrop-filter: blur(10px); border: 1px solid var(--glass-border); }
-        .btn-nav { background: transparent; color: white; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; }
-        .btn-nav:hover { background: rgba(255,255,255,0.2); }
+/* stagger helper for children */
+.stagger > *{ opacity:0; transform: translateY(16px); }
+.slide.active .stagger > *{ animation: rise .6s var(--ease) forwards; }
+.slide.active .stagger > *:nth-child(1){ animation-delay:.30s; }
+.slide.active .stagger > *:nth-child(2){ animation-delay:.42s; }
+.slide.active .stagger > *:nth-child(3){ animation-delay:.54s; }
+.slide.active .stagger > *:nth-child(4){ animation-delay:.66s; }
+.slide.active .stagger > *:nth-child(5){ animation-delay:.78s; }
+.slide.active .stagger > *:nth-child(6){ animation-delay:.90s; }
 
-        #progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 6px; z-index: 50; }
-        #progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent-blue), var(--accent-pink)); width: 0%; transition: width 0.4s; }
+/* ============================================================
+   TITLE SLIDE
+   ============================================================ */
+.title-slide{ text-align:center; align-items:center; }
+.title-slide .logo-wrap{
+  width:120px; height:120px; border-radius:50%;
+  background: var(--cream);
+  display:flex; align-items:center; justify-content:center;
+  margin: 0 auto 30px;
+  box-shadow: var(--shadow-card);
+  opacity:0; transform: scale(.6);
+  animation: pop .8s var(--ease) .1s forwards;
+}
+.title-slide .logo-wrap img{ width:78px; height:auto; }
+@keyframes pop{ to{ opacity:1; transform:scale(1); } }
+.title-slide .kicker{
+  font-family: var(--font-display); letter-spacing:.3em; text-transform:uppercase;
+  font-size:.78rem; color: var(--cyan-soft); margin-bottom:20px;
+  opacity:0; animation: rise .6s var(--ease) .3s forwards;
+}
+.title-slide h1{
+  font-family: var(--font-display); font-weight:900;
+  font-size: clamp(2.4rem, 6vw, 4.6rem);
+  line-height:1.02; margin: 0 0 22px;
+  opacity:0; animation: rise .8s var(--ease) .42s forwards;
+}
+.title-slide .quote-mark{ color: var(--amber); }
+.title-slide h2{
+  font-family: var(--font-body); font-weight:500; font-size: clamp(1.05rem,2vw,1.35rem);
+  color: rgba(250,246,236,.8); max-width:680px; margin: 0 auto 34px;
+  opacity:0; animation: rise .8s var(--ease) .58s forwards;
+}
+.title-meta{
+  display:flex; gap:26px; justify-content:center; flex-wrap:wrap;
+  opacity:0; animation: rise .8s var(--ease) .72s forwards;
+}
+.title-meta span{
+  font-family: var(--font-display); font-size:.75rem; letter-spacing:.1em; text-transform:uppercase;
+  color: var(--ink); background: var(--amber);
+  padding: 8px 18px; border-radius: 999px; font-weight:700;
+}
 
-        #notes-panel {
-            position: fixed; bottom: -100%; left: 0; width: 100%; height: 40vh;
-            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); border-top: 4px solid var(--accent-blue);
-            z-index: 55; transition: bottom 0.5s; padding: 2.5rem;
-        }
-        #notes-panel.open { bottom: 0; }
-    </style>
+/* ============================================================
+   SECTION DIVIDERS
+   ============================================================ */
+.divider-slide{ text-align:left; align-items:flex-start; justify-content:center; }
+.divider-slide .num{
+  font-family: var(--font-display); font-weight:900;
+  font-size: clamp(6rem, 14vw, 11rem);
+  line-height:.8; color: transparent;
+  -webkit-text-stroke: 2px rgba(250,246,236,0.28);
+  margin-bottom: 6px;
+  opacity:0; transform: translateX(-30px);
+  animation: slideIn .8s var(--ease) .1s forwards;
+}
+@keyframes slideIn{ to{ opacity:1; transform:translateX(0);} }
+.divider-slide h1{
+  font-family: var(--font-display); font-weight:800;
+  font-size: clamp(2rem, 5vw, 3.8rem); margin: 0 0 18px; max-width:900px; line-height:1.05;
+  opacity:0; animation: rise .7s var(--ease) .34s forwards;
+}
+.divider-slide .dek{ opacity:0; animation: rise .7s var(--ease) .48s forwards; }
+.divider-slide .obj-tag{
+  display:inline-flex; align-items:center; gap:8px;
+  font-family: var(--font-display); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase;
+  color: var(--navy); background: var(--cyan-soft);
+  padding: 8px 16px; border-radius: 999px; margin-top: 22px; font-weight:700;
+  opacity:0; animation: rise .7s var(--ease) .6s forwards;
+}
+.time-chip{
+  position:absolute; right:8vw; bottom:100px;
+  font-family: var(--font-display); font-weight:800;
+  font-size:1rem; color: var(--navy); background: var(--amber);
+  padding: 14px 22px; border-radius: var(--radius-card);
+  transform: rotate(3deg);
+  box-shadow: var(--shadow-card);
+  opacity:0; animation: pop .7s var(--ease) .7s forwards;
+}
+
+/* ============================================================
+   INDEX CARD — signature element
+   ============================================================ */
+.index-card{
+  position:relative;
+  background: var(--cream);
+  color: var(--ink);
+  border-radius: var(--radius-card);
+  padding: 26px 26px 22px;
+  box-shadow: var(--shadow-card);
+  background-image: repeating-linear-gradient(
+      to bottom, transparent 0 34px, rgba(27,47,92,0.08) 34px 35px
+  );
+  background-position: 0 44px;
+}
+.index-card::before{
+  content:"";
+  position:absolute; top:-10px; left:50%; transform:translateX(-50%);
+  width:18px; height:18px; border-radius:50%;
+  background: radial-gradient(circle at 35% 30%, #ff8a7a, var(--pin) 60%, #a83627 100%);
+  box-shadow: 0 4px 6px rgba(0,0,0,.35);
+}
+.index-card .chunk-text{
+  font-family: var(--font-hand);
+  font-size: 1.6rem;
+  font-weight:600;
+  color: var(--navy-brand);
+  line-height:1.4;
+}
+.index-card .chunk-label{
+  display:block;
+  font-family: var(--font-display); font-size:.62rem; letter-spacing:.14em; text-transform:uppercase;
+  color: var(--ink-soft); margin-bottom:8px; font-weight:700;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn{
+  font-family: var(--font-display); font-weight:700; font-size:.82rem; letter-spacing:.05em;
+  text-transform:uppercase;
+  border:none; border-radius: 999px;
+  padding: 13px 26px;
+  display:inline-flex; align-items:center; gap:8px;
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease), background .25s var(--ease);
+}
+.btn-primary{ background: var(--amber); color: var(--ink); box-shadow: 0 8px 18px rgba(242,169,59,.28); }
+.btn-primary:hover{ transform: translateY(-2px); box-shadow: 0 12px 22px rgba(242,169,59,.4); }
+.btn-ghost{ background: rgba(250,246,236,0.08); color: var(--cream); border:1px solid var(--line); }
+.btn-ghost:hover{ background: rgba(250,246,236,0.16); }
+.btn-cyan{ background: var(--cyan); color: var(--navy-deep); box-shadow: 0 8px 18px rgba(40,177,218,.3); }
+.btn-cyan:hover{ transform: translateY(-2px); }
+
+/* ============================================================
+   CONTENT SLIDE COMMON
+   ============================================================ */
+.content-slide{ align-items:flex-start; }
+.two-col{
+  display:grid; grid-template-columns: 1fr 1fr; gap: 50px; width:100%; align-items:start; margin-top:10px;
+}
+.grid-3{ display:grid; grid-template-columns: repeat(3,1fr); gap:26px; width:100%; margin-top:14px; }
+.grid-2{ display:grid; grid-template-columns: 1fr 1fr; gap:26px; width:100%; margin-top:14px; }
+
+/* Philosophy / quote slide */
+.quote-slide{ text-align:center; align-items:center; }
+.quote-slide blockquote{
+  font-family: var(--font-display); font-weight:800;
+  font-size: clamp(1.7rem, 3.6vw, 3.1rem);
+  line-height:1.24; max-width: 920px; margin: 20px auto 26px;
+  color: var(--cream);
+}
+.quote-slide blockquote .mark{ color: var(--amber); }
+.quote-slide cite{
+  font-family: var(--font-body); font-style:normal; font-size:.85rem;
+  letter-spacing:.08em; text-transform:uppercase; color: var(--cyan-soft);
+}
+.quote-bigmark{
+  font-family: var(--font-display); font-size: 7rem; color: rgba(242,169,59,0.35);
+  line-height:.4; margin-bottom: 10px;
+}
+
+/* Balance / bars visual */
+.balance-wrap{ display:flex; gap:50px; justify-content:center; align-items:flex-end; margin-top: 30px; width:100%; }
+.balance-col{ text-align:center; width: 230px; }
+.balance-col .label{ font-family: var(--font-display); font-weight:700; font-size:.85rem; margin-bottom:10px; color: var(--cream); }
+.balance-bar-track{ height: 220px; width: 60px; margin:0 auto; background: rgba(250,246,236,.08); border-radius: 30px; display:flex; align-items:flex-end; overflow:hidden; border:1px solid var(--line); }
+.balance-bar-fill{ width:100%; border-radius: 30px; height:0%; transition: height 1.4s var(--ease) .5s; }
+.balance-col.vocab .balance-bar-fill{ background: linear-gradient(180deg, var(--cyan-soft), var(--cyan)); }
+.balance-col.grammar .balance-bar-fill{ background: linear-gradient(180deg, rgba(250,246,236,.5), rgba(250,246,236,.25)); }
+.slide.active .balance-bar-fill.h-high{ height:88%; }
+.slide.active .balance-bar-fill.h-low{ height:38%; }
+.balance-col .result{ margin-top:14px; font-size:.85rem; color: rgba(250,246,236,.7); }
+
+/* Methodology cards */
+.method-card{
+  background: rgba(250,246,236,0.06);
+  border:1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 22px 22px;
+}
+.method-card h3{ font-family: var(--font-display); font-size:1rem; margin:0 0 8px; color: var(--cyan-soft); }
+.method-card p{ font-size:.9rem; line-height:1.6; color: rgba(250,246,236,.78); margin:0; }
+.method-card .ico{ font-size:1.6rem; margin-bottom:10px; display:block; }
+
+/* Photo analysis slides */
+.photo-frame{
+  position:relative;
+  background: linear-gradient(160deg, #223a68, #16233f);
+  border-radius: var(--radius-card);
+  aspect-ratio: 4/3;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+  box-shadow: var(--shadow-card);
+  border: 6px solid var(--cream);
+}
+.photo-frame .placeholder-icon{ font-size: 4.2rem; opacity:.85; }
+.photo-frame .cap{
+  position:absolute; bottom:0; left:0; right:0;
+  background: rgba(16,23,41,0.75);
+  backdrop-filter: blur(4px);
+  color: var(--cream); font-family: var(--font-display); font-size:.72rem;
+  letter-spacing:.08em; text-transform:uppercase; padding: 10px 14px;
+}
+.photo-analysis .prompt-q{
+  font-family: var(--font-hand); font-size: 1.7rem; color: var(--amber);
+  margin: 18px 0 16px;
+}
+.reveal-btn{ margin-bottom:18px; }
+.chunk-answers{
+  display:grid; grid-template-columns: 1fr; gap:12px;
+  max-height:0; overflow:hidden; opacity:0;
+  transition: max-height .6s var(--ease), opacity .5s var(--ease);
+}
+.chunk-answers.open{ max-height: 500px; opacity:1; }
+.chunk-answers .index-card{ transform: rotate(-1.4deg); padding: 14px 18px; }
+.chunk-answers .index-card:nth-child(2){ transform: rotate(1deg); }
+.chunk-answers .index-card:nth-child(3){ transform: rotate(-0.6deg); }
+.chunk-answers .chunk-text{ font-size:1.25rem; }
+
+/* Contrast slide */
+.contrast-wrap{ display:grid; grid-template-columns: 1fr auto 1fr; gap:26px; align-items:center; width:100%; margin-top:20px; }
+.contrast-col{ background: rgba(250,246,236,0.05); border:1px solid var(--line); border-radius: var(--radius-card); padding:24px; }
+.contrast-col h4{ font-family: var(--font-display); font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; margin:0 0 16px; }
+.contrast-col.traditional h4{ color: rgba(250,246,236,.55); }
+.contrast-col.chunked h4{ color: var(--cyan-soft); }
+.token-row{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
+.token{
+  font-family: var(--font-display); font-size:.85rem; font-weight:600;
+  padding:7px 12px; border-radius:6px; background: rgba(250,246,236,.07); color: rgba(250,246,236,.65);
+  border:1px dashed rgba(250,246,236,.25);
+}
+.token.chunkblock{
+  background: var(--amber); color: var(--ink); border: none;
+  box-shadow: 0 4px 10px rgba(242,169,59,.3);
+}
+.vs-arrow{ font-family: var(--font-display); font-size:1.6rem; color: var(--amber); font-weight:800; }
+
+/* categories grid */
+.cat-card{ background: var(--cream); color: var(--ink); border-radius: var(--radius-card); padding:20px; box-shadow: var(--shadow-card); }
+.cat-card h4{ font-family: var(--font-display); font-size:.95rem; margin:0 0 10px; color: var(--navy-brand); }
+.cat-card ul{ margin:0; padding-left:18px; font-size:.86rem; line-height:1.7; color: var(--ink-soft); }
+
+/* Participation / discussion prompt */
+.participation-slide{ text-align:center; align-items:center; }
+.participation-badge{
+  font-family: var(--font-display); font-weight:800; font-size:.72rem; letter-spacing:.16em; text-transform:uppercase;
+  color: var(--navy); background: var(--cyan-soft); padding:8px 18px; border-radius:999px; margin-bottom:20px;
+  opacity:0; animation: rise .5s var(--ease) .1s forwards;
+}
+.participation-slide .prompt-card{
+  max-width: 780px; background: var(--cream); color: var(--ink);
+  border-radius: var(--radius-card); padding: 40px 42px; box-shadow: var(--shadow-card);
+  transform: rotate(-1deg);
+  opacity:0; animation: rise .7s var(--ease) .24s forwards;
+}
+.participation-slide .prompt-card p{ font-family: var(--font-hand); font-size:1.9rem; line-height:1.35; color: var(--navy-brand); margin:0; }
+
+/* mini timer badge inline */
+.mini-timer{ display:inline-flex; align-items:center; gap:8px; font-family: var(--font-display); font-size:.75rem; letter-spacing:.06em; text-transform:uppercase; color: var(--amber); margin-top:22px; opacity:0; animation: rise .5s var(--ease) .4s forwards; }
+.mini-timer .dot{ width:8px; height:8px; border-radius:50%; background: var(--amber); animation: blink 1.4s ease-in-out infinite; }
+@keyframes blink{ 0%,100%{opacity:1;} 50%{opacity:.3;} }
+
+/* Timer widget (activity slides) */
+.timer-widget{
+  display:flex; align-items:center; gap:38px; margin-top: 28px;
+  background: rgba(250,246,236,0.05); border:1px solid var(--line); border-radius: var(--radius-card);
+  padding: 26px 32px;
+}
+.timer-ring-wrap{ position:relative; width:150px; height:150px; flex:none; }
+.timer-ring-wrap svg{ transform: rotate(-90deg); }
+.timer-ring-bg{ fill:none; stroke: rgba(250,246,236,0.1); stroke-width:9; }
+.timer-ring-fg{ fill:none; stroke: var(--amber); stroke-width:9; stroke-linecap:round; transition: stroke-dashoffset 1s linear; }
+.timer-readout{
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  font-family: var(--font-display); font-size:1.9rem; font-weight:800; color: var(--cream);
+  font-variant-numeric: tabular-nums;
+}
+.timer-controls{ display:flex; flex-direction:column; gap:12px; }
+.timer-controls .row{ display:flex; gap:10px; }
+.timer-label{ font-family:var(--font-display); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color: var(--cyan-soft); margin-bottom:4px; }
+
+/* Task steps list */
+.step-list{ list-style:none; margin:20px 0 0; padding:0; display:flex; flex-direction:column; gap:14px; width:100%; }
+.step-list li{ display:flex; gap:16px; align-items:flex-start; background: rgba(250,246,236,0.05); border:1px solid var(--line); border-radius: var(--radius-card); padding:16px 18px; }
+.step-list .step-num{ font-family: var(--font-display); font-weight:900; font-size:1.3rem; color: var(--amber); flex:none; width:32px; }
+.step-list .step-text{ font-size:.92rem; line-height:1.6; color: rgba(250,246,236,.85); }
+.step-list .step-text b{ color: var(--cream); }
+
+/* Location chips */
+.chip-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
+.loc-chip{ font-family: var(--font-display); font-size:.78rem; font-weight:700; background: rgba(40,177,218,0.14); color: var(--cyan-soft); border:1px solid rgba(40,177,218,0.35); padding:8px 16px; border-radius:999px; }
+
+/* takeaway / CTA */
+.cta-slide{ text-align:center; align-items:center; }
+.cta-slide .big{ font-family: var(--font-display); font-weight:900; font-size: clamp(1.8rem,4vw,3.2rem); max-width:900px; margin: 10px auto 20px; line-height:1.15; }
+.cta-slide .big .hi{ color: var(--amber); }
+
+/* Thank you slide */
+.thanks-slide{ text-align:center; align-items:center; }
+
+/* footer nav */
+.controls{
+  position: fixed; bottom: 22px; left:50%; transform: translateX(-50%);
+  display:flex; align-items:center; gap:16px;
+  background: rgba(16,23,41,0.72);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(10px);
+  padding: 10px 16px;
+  border-radius: 999px;
+  z-index: 40;
+}
+.controls button.nav-arrow{
+  width:38px; height:38px; border-radius:50%; border:none;
+  background: rgba(250,246,236,0.08); color: var(--cream);
+  font-size:1.1rem; display:flex; align-items:center; justify-content:center;
+  transition: background .2s, transform .2s;
+}
+.controls button.nav-arrow:hover{ background: var(--cyan); color: var(--navy-deep); transform: scale(1.06); }
+.controls button.nav-arrow:disabled{ opacity:.3; cursor:default; }
+.controls button.nav-arrow:disabled:hover{ background: rgba(250,246,236,0.08); color: var(--cream); transform:none; }
+
+.progress-dots{ display:flex; gap:5px; align-items:center; max-width: 46vw; overflow-x:auto; padding: 0 4px; scrollbar-width:none; }
+.progress-dots::-webkit-scrollbar{ display:none; }
+.dot{
+  width:7px; height:7px; border-radius:50%; background: rgba(250,246,236,0.22); flex:none;
+  transition: background .3s, transform .3s, width .3s;
+  cursor:pointer;
+}
+.dot.section-start{ width:3px; height:14px; border-radius:2px; background: rgba(242,169,59,.4); }
+.dot.current{ background: var(--amber); width:20px; border-radius:5px; }
+.dot:hover{ background: var(--cyan-soft); }
+
+.icon-btn{
+  width:38px; height:38px; border-radius:50%; border:none; background: rgba(250,246,236,0.08); color: var(--cream);
+  display:flex; align-items:center; justify-content:center; font-size:1rem; transition: background .2s;
+}
+.icon-btn:hover{ background: var(--cyan); color: var(--navy-deep); }
+
+.progress-bar{ position:fixed; top:0; left:0; right:0; height:3px; background: rgba(250,246,236,0.08); z-index:41; }
+.progress-fill{ height:100%; background: linear-gradient(90deg, var(--cyan), var(--amber)); width:0%; transition: width .5s var(--ease); }
+
+.kbd-hint{
+  position:fixed; top:20px; right:34px; z-index:30;
+  font-family: var(--font-display); font-size:.68rem; letter-spacing:.06em; color: rgba(250,246,236,.4);
+  display:flex; gap:6px; align-items:center;
+  opacity:0; animation: fadeOutHint 6s ease forwards;
+}
+@keyframes fadeOutHint{ 0%,60%{opacity:1;} 100%{opacity:0; visibility:hidden;} }
+.kbd-hint kbd{ background: rgba(250,246,236,.1); border:1px solid var(--line); border-radius:4px; padding:2px 7px; font-family: var(--font-display); }
+
+/* home overview grid */
+.overview-slide{ align-items:flex-start; }
+.agenda-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:18px; width:100%; margin-top: 22px; }
+.agenda-card{
+  background: rgba(250,246,236,0.05); border:1px solid var(--line); border-radius: var(--radius-card);
+  padding: 20px; position:relative; overflow:hidden; cursor:pointer; transition: transform .3s var(--ease), background .3s;
+}
+.agenda-card:hover{ transform: translateY(-4px); background: rgba(250,246,236,0.09); }
+.agenda-card .a-num{ font-family: var(--font-display); font-size:2.2rem; font-weight:900; color: rgba(250,246,236,.15); position:absolute; top:8px; right:14px; }
+.agenda-card h4{ font-family: var(--font-display); font-size:.95rem; margin: 4px 0 8px; color: var(--cyan-soft); }
+.agenda-card p{ font-size:.8rem; color: rgba(250,246,236,.65); margin:0 0 10px; line-height:1.5; }
+.agenda-card .a-time{ font-family: var(--font-display); font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color: var(--amber); font-weight:700; }
+
+/* responsive */
+@media (max-width: 900px){
+  .two-col, .grid-3, .grid-2, .contrast-wrap, .agenda-grid{ grid-template-columns: 1fr; }
+  .contrast-wrap .vs-arrow{ justify-self:center; }
+  .slide{ padding: 90px 6vw 130px; }
+  .timer-widget{ flex-direction:column; }
+  .deck-chrome{ padding: 14px 18px; }
+  .section-label{ display:none; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+
+/* focus visibility */
+a:focus-visible, button:focus-visible, .dot:focus-visible{
+  outline: 2px solid var(--cyan-soft); outline-offset: 2px;
+}
+
+</style>
 </head>
 <body>
 
-    <canvas id="particle-canvas"></canvas>
-    <div class="bg-shape shape-1"></div>
-    <div class="bg-shape shape-2"></div>
-    <div class="bg-shape shape-3"></div>
-    
-    <div id="progress-container"><div id="progress-bar"></div></div>
+<div class="ambient-bg" id="ambientBg" aria-hidden="true"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 
-    <div id="controls">
-        <button class="btn-nav" id="btn-prev" onclick="prevSlide()"><i data-lucide="chevron-left"></i></button>
-        <button class="btn-nav" id="btn-notes" onclick="toggleNotes()"><i data-lucide="book-open"></i></button>
-        <button class="btn-nav" id="btn-next" onclick="nextSlide()"><i data-lucide="chevron-right"></i></button>
+<div class="kbd-hint"><kbd>&larr;</kbd><kbd>&rarr;</kbd> to navigate &nbsp;·&nbsp; <kbd>Esc</kbd> overview</div>
+
+<header class="deck-chrome">
+  <div class="brand">
+    <img src="https://www.planetenglishqro.com/img/logo_Oneenglish.png" alt="One English logo">
+    <span>One English<small>Teacher Workshop · Tepic</small></span>
+  </div>
+  <div class="section-label" id="sectionLabel">Welcome</div>
+  <div class="slide-counter"><span id="slideNum">1</span>&nbsp;/&nbsp;<span id="slideTotal">0</span></div>
+</header>
+
+<main class="stage" id="stage">
+
+  <!-- 1: TITLE -->
+  <section class="slide title-slide" data-section="Welcome">
+    <div class="slide-inner">
+      <div class="logo-wrap"><img src="https://www.planetenglishqro.com/img/logo_Oneenglish.png" alt="One English logo"></div>
+      <div class="kicker">One English Tepic · Teacher Training</div>
+      <h1><span class="quote-mark">&ldquo;</span>Language Is Grammaticalised Lexis<span class="quote-mark">&rdquo;</span></h1>
+      <h2>Rebuilding our conversation clubs around lexical chunks — the phrases students actually need, in the exact moments they need them.</h2>
+      <div class="title-meta">
+        <span>90+ Minute Workshop</span>
+        <span>Hands-On &amp; Outdoor</span>
+        <span>All One English Facilitators</span>
+      </div>
     </div>
+  </section>
 
-    <div id="notes-panel">
-        <div class="flex justify-between items-center mb-6">
-            <h3 class="text-3xl font-bold text-sky-400">Presenter Notes</h3>
-            <button onclick="toggleNotes()" class="text-gray-400"><i data-lucide="x"></i></button>
-        </div>
-        <div id="notes-content" class="text-xl text-gray-200"></div>
+  <!-- 2: AGENDA OVERVIEW -->
+  <section class="slide overview-slide content-slide" data-section="Welcome">
+    <div class="slide-inner">
+      <p class="eyebrow">Today's Roadmap</p>
+      <h1 class="headline">Six stops, one <em>philosophy</em>.</h1>
+      <p class="dek">We'll move from theory to the street and back again — ending with every teacher owning a plan for their next off-site club.</p>
+      <div class="agenda-grid">
+        <div class="agenda-card"><div class="a-num">01</div><span class="a-time">10 min</span><h4>The Hook &amp; Core Philosophy</h4><p>Why vocabulary — not grammar — is the engine of real communication.</p></div>
+        <div class="agenda-card"><div class="a-num">02</div><span class="a-time">15 min</span><h4>Visualizing the Context</h4><p>Photo analysis of real One English Tepic conversation clubs.</p></div>
+        <div class="agenda-card"><div class="a-num">03</div><span class="a-time">15 min</span><h4>What Are Lexical Chunks?</h4><p>Definition, contrast, and the categories every teacher should know.</p></div>
+        <div class="agenda-card"><div class="a-num">04</div><span class="a-time">20 min</span><h4>Designing the Lexical Club</h4><p>Teams invent next month's off-site club around 3–5 chunks.</p></div>
+        <div class="agenda-card"><div class="a-num">05</div><span class="a-time">20 min</span><h4>The Chunk Hunt &amp; Talk</h4><p>An outdoor walking activity to lower the affective filter.</p></div>
+        <div class="agenda-card"><div class="a-num">06</div><span class="a-time">10 min</span><h4>Conclusion &amp; Q&amp;A</h4><p>Commit to planning your next club around real chunks.</p></div>
+      </div>
     </div>
+  </section>
 
-    <div id="presentation">
-        <!-- Slide 1 -->
-        <div class="slide active">
-            <div class="glass p-16 rounded-3xl text-center max-w-4xl w-full">
-                <img src="https://www.planetenglishqro.com/img/logo_Oneenglish.png" alt="Logo" class="w-64 mx-auto mb-10">
-                <h1 class="text-7xl font-extrabold mb-8 gradient-text bg-gradient-to-r from-sky-300 via-pink-400 to-purple-400">Lexical Chunks Workshop</h1>
-                <p class="text-2xl text-gray-400">Mastering Fluency over Form</p>
-            </div>
-        </div>
-
-        <!-- Slide 2: Philosophy -->
-        <div class="slide">
-            <div class="glass p-16 max-w-4xl w-full text-center">
-                <h2 class="text-5xl font-bold mb-10">The Core Philosophy</h2>
-                <p class="text-3xl italic text-sky-300">"Language is grammaticalised lexis, not lexicalised grammar."</p>
-                <div class="mt-8 text-xl text-gray-300">Michael Lewis</div>
-            </div>
-        </div>
-
-        <!-- Slide 3: Scenario 1 - Shelter -->
-        <div class="slide">
-            <h1 class="text-5xl font-bold mb-8">Scenario: Animal Shelter</h1>
-            <div class="max-w-4xl w-full glass p-8 rounded-2xl flex flex-col items-center">
-                <img src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=800&q=80" class="rounded-xl mb-6 shadow-2xl">
-                <button class="bg-sky-500 py-3 px-8 rounded-full mb-6" onclick="revealChunks(this)">Reveal Chunks</button>
-                <div class="chunk-container w-full">
-                    <div class="chunk-item bg-gray-800 p-4 rounded text-xl border-l-4 border-sky-400">"Is it a boy or a girl?"</div>
-                    <div class="chunk-item bg-gray-800 p-4 rounded text-xl border-l-4 border-pink-400">"Can I hold him?"</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 4: Scenario 2 - Karaoke (Fixed URL) -->
-        <div class="slide">
-            <h1 class="text-5xl font-bold mb-8">Scenario: Karaoke</h1>
-            <div class="max-w-4xl w-full glass p-8 rounded-2xl flex flex-col items-center">
-                <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80" class="rounded-xl mb-6 shadow-2xl">
-                <button class="bg-pink-500 py-3 px-8 rounded-full mb-6" onclick="revealChunks(this)">Reveal Chunks</button>
-                <div class="chunk-container w-full">
-                    <div class="chunk-item bg-gray-800 p-4 rounded text-xl border-l-4 border-sky-400">"What's your go-to song?"</div>
-                    <div class="chunk-item bg-gray-800 p-4 rounded text-xl border-l-4 border-pink-400">"You nailed it!"</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 5: Participation Activity -->
-        <div class="slide">
-            <h1 class="text-5xl font-bold mb-8">Group Task: Design a Club</h1>
-            <div class="grid grid-cols-3 gap-6 max-w-5xl w-full">
-                <div class="glass p-6 rounded-2xl border-t-4 border-sky-500">1. Pick Location</div>
-                <div class="glass p-6 rounded-2xl border-t-4 border-pink-500">2. Define Chunks</div>
-                <div class="glass p-6 rounded-2xl border-t-4 border-yellow-500">3. Pitch Activity</div>
-            </div>
-            <div class="timer-circle mt-10" id="timer-display">05:00</div>
-            <button class="mt-4 bg-white/20 px-6 py-2 rounded-full" onclick="startTimer(5)">Start Timer</button>
-        </div>
-
-        <!-- Slide 6: Debrief -->
-        <div class="slide">
-            <h1 class="text-5xl font-bold mb-8">Debrief & Next Steps</h1>
-            <div class="glass p-10 max-w-3xl w-full">
-                <p class="text-2xl mb-6">"Learning without grammar" is not about ignoring rules entirely. It’s about prioritizing student fluency and confidence first.</p>
-                <p class="text-xl text-sky-400 font-bold">Challenge: Plan your next club around 5 lexical chunks.</p>
-            </div>
-        </div>
+  <!-- 3: DIVIDER 01 -->
+  <section class="slide divider-slide" data-section="01 · Hook &amp; Philosophy">
+    <div class="slide-inner">
+      <div class="num">01</div>
+      <h1>The Hook and Core Philosophy</h1>
+      <p class="dek">Shifting our mindset from grammar-first to vocabulary-first — before we ever plan another lesson.</p>
+      <span class="obj-tag">Objective · Reframe how we think about fluency</span>
     </div>
+    <div class="time-chip">10 MIN</div>
+  </section>
 
-    <script>
-        lucide.createIcons();
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-        
-        const presenterNotes = [
-            "Intro: Welcome teachers, emphasize the 'grammaticalised lexis' quote.",
-            "Philosophy: Explain why vocabulary must come before rules.",
-            "Shelter Activity: Facilitate group discussion on chunk extraction.",
-            "Karaoke Activity: Focus on high-energy, social phrases.",
-            "Participation: Set timer for 5 minutes for group brainstorming.",
-            "Conclusion: Final call to action for their next off-site club."
-        ];
+  <!-- 4: QUOTE -->
+  <section class="slide quote-slide" data-section="01 · Hook &amp; Philosophy">
+    <div class="slide-inner">
+      <div class="quote-bigmark">&ldquo;</div>
+      <blockquote>Language is <span class="mark">grammaticalised lexis</span>, not lexicalised grammar.</blockquote>
+      <cite>Michael Lewis · The Lexical Approach</cite>
+    </div>
+  </section>
 
-        function updateSlide() {
-            slides.forEach((slide, i) => slide.classList.toggle('active', i === currentSlide));
-            document.getElementById('progress-bar').style.width = `${((currentSlide+1)/slides.length)*100}%`;
-            document.getElementById('notes-content').innerHTML = presenterNotes[currentSlide] || "No notes.";
-        }
+  <!-- 5: EXPLANATION / BALANCE -->
+  <section class="slide content-slide" data-section="01 · Hook &amp; Philosophy">
+    <div class="slide-inner">
+      <p class="eyebrow">The Explanation</p>
+      <h1 class="headline">Vocabulary came first. Grammar came <em>after</em>.</h1>
+      <p class="dek">Humans communicated through phrases long before anyone wrote a rule down. Grammar was invented later, to categorize spoken language — not to generate it.</p>
+      <div class="balance-wrap">
+        <div class="balance-col vocab">
+          <div class="label">Vocabulary, no grammar</div>
+          <div class="balance-bar-track"><div class="balance-bar-fill h-high"></div></div>
+          <div class="result">✅ Can communicate</div>
+        </div>
+        <div class="balance-col grammar">
+          <div class="label">Perfect grammar, no vocabulary</div>
+          <div class="balance-bar-track"><div class="balance-bar-fill h-low"></div></div>
+          <div class="result">❌ Cannot communicate</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        function nextSlide() { if(currentSlide < slides.length - 1) { currentSlide++; updateSlide(); } }
-        function prevSlide() { if(currentSlide > 0) { currentSlide--; updateSlide(); } }
-        function toggleNotes() { document.getElementById('notes-panel').classList.toggle('open'); }
-        function revealChunks(btn) { 
-            btn.nextElementSibling.querySelectorAll('.chunk-item').forEach(c => c.classList.add('revealed'));
-            btn.classList.add('hidden');
-        }
+  <!-- 6: PARTICIPATION - Turn to a partner -->
+  <section class="slide participation-slide" data-section="01 · Hook &amp; Philosophy">
+    <div class="slide-inner">
+      <div class="participation-badge">Turn &amp; Talk · 2 Minutes</div>
+      <div class="prompt-card">
+        <p>"Have you ever met someone with amazing vocabulary but broken grammar — and understood them perfectly? What happened?"</p>
+      </div>
+      <div class="mini-timer"><span class="dot"></span> Discuss with the person next to you</div>
+    </div>
+  </section>
 
-        function startTimer(m) {
-            let time = m * 60;
-            const display = document.getElementById('timer-display');
-            setInterval(() => {
-                let minutes = Math.floor(time / 60);
-                let seconds = time % 60;
-                display.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-                if(time > 0) time--;
-            }, 1000);
-        }
+  <!-- 7: DIVIDER 02 -->
+  <section class="slide divider-slide" data-section="02 · Visualizing the Context">
+    <div class="slide-inner">
+      <div class="num">02</div>
+      <h1>The One English Tepic Approach: Visualizing the Context</h1>
+      <p class="dek">Standardizing our conversation club methodology by analyzing real-world scenarios from our own clubs.</p>
+      <span class="obj-tag">Objective · See chunks in the wild</span>
+    </div>
+    <div class="time-chip">15 MIN</div>
+  </section>
 
-        document.addEventListener('keydown', e => {
-            if(e.key === 'ArrowRight') nextSlide();
-            if(e.key === 'ArrowLeft') prevSlide();
-        });
+  <!-- 8: METHODOLOGY -->
+  <section class="slide content-slide" data-section="02 · Visualizing the Context">
+    <div class="slide-inner">
+      <p class="eyebrow">Our Methodology</p>
+      <h1 class="headline">Off-site clubs are <em>immersive experiences</em>, not classrooms.</h1>
+      <p class="dek">Every location we choose is a stage for real, unscripted English — the classroom walls simply aren't part of the plan.</p>
+      <div class="grid-3">
+        <div class="method-card"><span class="ico">🐾</span><h3>Real stakes</h3><p>Students speak because they need to — to hold a puppy, order food, or pick a song — not because a worksheet told them to.</p></div>
+        <div class="method-card"><span class="ico">🗺️</span><h3>Location-driven</h3><p>The environment dictates the language. We don't teach grammar and hope it's useful — we teach exactly what the place demands.</p></div>
+        <div class="method-card"><span class="ico">💬</span><h3>Chunk-first</h3><p>Every club is built backward from 3–5 lexical chunks a student will genuinely need in that exact setting.</p></div>
+      </div>
+    </div>
+  </section>
 
-        updateSlide();
-        
-        // Particle Engine
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        function animate() {
-            ctx.clearRect(0,0, canvas.width, canvas.height);
-            requestAnimationFrame(animate);
-        }
-        animate();
-    </script>
+  <!-- 9: PHOTO ANALYSIS INTRO -->
+  <section class="slide content-slide" data-section="02 · Visualizing the Context">
+    <div class="slide-inner">
+      <p class="eyebrow">The Exercise</p>
+      <h1 class="headline">Chunk Extraction: <em>read the room</em>.</h1>
+      <p class="dek">For each photo from a past One English Tepic club, we'll ask the same question — and you'll answer it together before we reveal our picks.</p>
+      <div class="prompt-card" style="max-width:640px; margin-top:10px;">
+        <p style="font-size:1.5rem;">"What chunks would students need <u>right here</u>, in this exact moment?"</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10: PHOTO 1 - ANIMAL SHELTER -->
+  <section class="slide content-slide photo-analysis" data-section="02 · Visualizing the Context">
+    <div class="slide-inner">
+      <p class="eyebrow">Photo 1 of 3</p>
+      <h1 class="headline">The Animal Shelter</h1>
+      <div class="two-col">
+        <div class="photo-frame">
+          <span class="placeholder-icon">🐶</span>
+          <div class="cap">One English Tepic · Conversation Club Archive</div>
+        </div>
+        <div>
+          <p class="prompt-q">"What chunks would students need right here?"</p>
+          <button class="btn btn-primary reveal-btn" data-reveal="reveal1">Reveal our picks</button>
+          <div class="chunk-answers" id="reveal1">
+            <div class="index-card"><span class="chunk-label">Chunk 01</span><div class="chunk-text">Is it a boy or a girl?</div></div>
+            <div class="index-card"><span class="chunk-label">Chunk 02</span><div class="chunk-text">Can I hold him?</div></div>
+            <div class="index-card"><span class="chunk-label">Chunk 03</span><div class="chunk-text">He's so well-behaved.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11: PHOTO 2 - KARAOKE -->
+  <section class="slide content-slide photo-analysis" data-section="02 · Visualizing the Context">
+    <div class="slide-inner">
+      <p class="eyebrow">Photo 2 of 3</p>
+      <h1 class="headline">Karaoke Night</h1>
+      <div class="two-col">
+        <div class="photo-frame">
+          <span class="placeholder-icon">🎤</span>
+          <div class="cap">One English Tepic · Conversation Club Archive</div>
+        </div>
+        <div>
+          <p class="prompt-q">"What chunks would students need right here?"</p>
+          <button class="btn btn-primary reveal-btn" data-reveal="reveal2">Reveal our picks</button>
+          <div class="chunk-answers" id="reveal2">
+            <div class="index-card"><span class="chunk-label">Chunk 01</span><div class="chunk-text">What's your go-to song?</div></div>
+            <div class="index-card"><span class="chunk-label">Chunk 02</span><div class="chunk-text">I'm up next.</div></div>
+            <div class="index-card"><span class="chunk-label">Chunk 03</span><div class="chunk-text">You nailed it!</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12: PHOTO 3 - RESTAURANT -->
+  <section class="slide content-slide photo-analysis" data-section="02 · Visualizing the Context">
+    <div class="slide-inner">
+      <p class="eyebrow">Photo 3 of 3</p>
+      <h1 class="headline">The Restaurant Table</h1>
+      <div class="two-col">
+        <div class="photo-frame">
+          <span class="placeholder-icon">🍽️</span>
+          <div class="cap">One English Tepic · Conversation Club Archive</div>
+        </div>
+        <div>
+          <p class="prompt-q">"What chunks would students need right here?"</p>
+          <button class="btn btn-primary reveal-btn" data-reveal="reveal3">Reveal our picks</button>
+          <div class="chunk-answers" id="reveal3">
+            <div class="index-card"><span class="chunk-label">Chunk 01</span><div class="chunk-text">Could we get the check, please?</div></div>
+            <div class="index-card"><span class="chunk-label">Chunk 02</span><div class="chunk-text">I'll have what he's having.</div></div>
+            <div class="index-card"><span class="chunk-label">Chunk 03</span><div class="chunk-text">Does this come with fries?</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13: PARTICIPATION RECAP -->
+  <section class="slide participation-slide" data-section="02 · Visualizing the Context">
+    <div class="slide-inner">
+      <div class="participation-badge">Quick Share · 3 Minutes</div>
+      <div class="prompt-card">
+        <p>"Think of a club you've run before. What's one chunk your students needed that we didn't plan for?"</p>
+      </div>
+      <div class="mini-timer"><span class="dot"></span> Share with the group when ready</div>
+    </div>
+  </section>
+
+  <!-- 14: DIVIDER 03 -->
+  <section class="slide divider-slide" data-section="03 · What Are Lexical Chunks?">
+    <div class="slide-inner">
+      <div class="num">03</div>
+      <h1>Deep Dive: What Are Lexical Chunks?</h1>
+      <p class="dek">Defining the concept clearly, and seeing exactly how it differs from the grammar-first approach.</p>
+      <span class="obj-tag">Objective · Build a shared definition</span>
+    </div>
+    <div class="time-chip">15 MIN</div>
+  </section>
+
+  <!-- 15: DEFINITION -->
+  <section class="slide content-slide" data-section="03 · What Are Lexical Chunks?">
+    <div class="slide-inner">
+      <p class="eyebrow">Definition</p>
+      <h1 class="headline">A chunk is <em>one unit</em>, not four words.</h1>
+      <p class="dek">Lexical chunks are groups of words the brain processes as a single unit of meaning — retrieved whole, bypassing grammatical analysis entirely.</p>
+      <div class="index-card" style="max-width:560px; margin-top:10px; transform: rotate(-1deg);">
+        <span class="chunk-label">Stored as one piece</span>
+        <div class="chunk-text">I've been meaning to ask you...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 16: CONTRAST -->
+  <section class="slide content-slide" data-section="03 · What Are Lexical Chunks?">
+    <div class="slide-inner">
+      <p class="eyebrow">The Contrast</p>
+      <h1 class="headline">Word-by-word vs. <em>chunk-by-chunk</em>.</h1>
+      <div class="contrast-wrap">
+        <div class="contrast-col traditional">
+          <h4>Traditional Approach</h4>
+          <div class="token-row">
+            <span class="token">I</span><span class="token">+</span><span class="token">have</span><span class="token">+</span><span class="token">been</span><span class="token">+</span><span class="token">learning</span>
+          </div>
+          <p style="font-size:.8rem; color:rgba(250,246,236,.55); margin:12px 0 0;">Assembled word-by-word, rule-by-rule — slow under pressure.</p>
+        </div>
+        <div class="vs-arrow">→</div>
+        <div class="contrast-col chunked">
+          <h4>Lexical Chunk Approach</h4>
+          <div class="token-row">
+            <span class="token chunkblock">I've been learning...</span><span class="token">+</span><span class="token chunkblock">[topic]</span><span class="token">+</span><span class="token chunkblock">for [X] years</span>
+          </div>
+          <p style="font-size:.8rem; color:rgba(250,246,236,.7); margin:12px 0 0;">Retrieved whole and dropped into a slot — instant and natural.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 17: CATEGORIES -->
+  <section class="slide content-slide" data-section="03 · What Are Lexical Chunks?">
+    <div class="slide-inner">
+      <p class="eyebrow">Categories</p>
+      <h1 class="headline">Chunks come in <em>families</em>.</h1>
+      <p class="dek">Not every chunk does the same job. Knowing the categories helps us plan a balanced club.</p>
+      <div class="grid-3">
+        <div class="cat-card"><h4>Greetings &amp; Openers</h4><ul><li>Long time no see!</li><li>How's it going?</li><li>Fancy seeing you here.</li></ul></div>
+        <div class="cat-card"><h4>Transitions &amp; Fillers</h4><ul><li>Speaking of which...</li><li>Anyway, moving on...</li><li>That reminds me...</li></ul></div>
+        <div class="cat-card"><h4>Polite Requests</h4><ul><li>Would you mind if...?</li><li>Could I possibly...?</li><li>Do you happen to have...?</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 18: PARTICIPATION - self check -->
+  <section class="slide content-slide" data-section="03 · What Are Lexical Chunks?">
+    <div class="slide-inner">
+      <p class="eyebrow">Self-Check · 3 Minutes</p>
+      <h1 class="headline">Sort it in your head first.</h1>
+      <p class="dek">Which category does each chunk belong to — greeting, transition, or polite request? Decide silently, then tap to check.</p>
+      <div class="grid-3">
+        <div class="cat-card" style="cursor:pointer;" onclick="this.querySelector('.answer').style.display='block'">
+          <h4>"Anyway, back to what I was saying..."</h4>
+          <p style="font-size:.8rem; color:var(--ink-soft);">Tap to reveal</p>
+          <div class="answer" style="display:none; margin-top:8px; font-family: var(--font-display); font-weight:700; color: var(--navy-brand);">→ Transition</div>
+        </div>
+        <div class="cat-card" style="cursor:pointer;" onclick="this.querySelector('.answer').style.display='block'">
+          <h4>"It's been ages!"</h4>
+          <p style="font-size:.8rem; color:var(--ink-soft);">Tap to reveal</p>
+          <div class="answer" style="display:none; margin-top:8px; font-family: var(--font-display); font-weight:700; color: var(--navy-brand);">→ Greeting</div>
+        </div>
+        <div class="cat-card" style="cursor:pointer;" onclick="this.querySelector('.answer').style.display='block'">
+          <h4>"Would it be alright if I...?"</h4>
+          <p style="font-size:.8rem; color:var(--ink-soft);">Tap to reveal</p>
+          <div class="answer" style="display:none; margin-top:8px; font-family: var(--font-display); font-weight:700; color: var(--navy-brand);">→ Polite Request</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 19: DIVIDER 04 -->
+  <section class="slide divider-slide" data-section="04 · Designing the Club">
+    <div class="slide-inner">
+      <div class="num">04</div>
+      <h1>Active Participation: Designing the Lexical Club</h1>
+      <p class="dek">Now it's your turn — teams practice designing an off-site club anchored by lexical chunks.</p>
+      <span class="obj-tag">Objective · Build a club, not a lesson plan</span>
+    </div>
+    <div class="time-chip">20 MIN</div>
+  </section>
+
+  <!-- 20: THE CHALLENGE -->
+  <section class="slide content-slide" data-section="04 · Designing the Club">
+    <div class="slide-inner">
+      <p class="eyebrow">The Challenge</p>
+      <h1 class="headline">You're planning <em>next month's</em> club.</h1>
+      <p class="dek">Form teams of 3–4. You're not writing a grammar lesson — you're designing an experience.</p>
+      <ul class="step-list">
+        <li><span class="step-num">1</span><span class="step-text"><b>Pick a location or activity</b> your students haven't visited yet.</span></li>
+        <li><span class="step-num">2</span><span class="step-text"><b>Choose 3 to 5 core lexical chunks</b> that location will naturally demand.</span></li>
+        <li><span class="step-num">3</span><span class="step-text"><b>Build the club around those chunks</b> — not the other way around.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 21: THE TASK - locations -->
+  <section class="slide content-slide" data-section="04 · Designing the Club">
+    <div class="slide-inner">
+      <p class="eyebrow">Need Inspiration?</p>
+      <h1 class="headline">A few starter locations.</h1>
+      <p class="dek">Feel free to invent your own — the stranger the setting, the richer the chunks.</p>
+      <div class="chip-row">
+        <span class="loc-chip">🎳 Bowling Alley</span>
+        <span class="loc-chip">🏛️ Local Museum</span>
+        <span class="loc-chip">🛒 Supermarket Scavenger Hunt</span>
+        <span class="loc-chip">☕ Coffee Roastery Tour</span>
+        <span class="loc-chip">🚲 Bike Rental Stand</span>
+        <span class="loc-chip">🎨 Pottery Studio</span>
+        <span class="loc-chip">🌮 Street Food Crawl</span>
+        <span class="loc-chip">📷 Photo Scavenger Hunt</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 22: TEAM WORKSPACE TIMER -->
+  <section class="slide content-slide" data-section="04 · Designing the Club">
+    <div class="slide-inner">
+      <p class="eyebrow">Team Design Time</p>
+      <h1 class="headline">Build your club now.</h1>
+      <p class="dek">Use this timer to keep your team on pace — someone should be writing the 3 to 5 chunks on paper as you go.</p>
+      <div class="timer-widget">
+        <div class="timer-ring-wrap">
+          <svg width="150" height="150" viewBox="0 0 150 150">
+            <circle class="timer-ring-bg" cx="75" cy="75" r="66"></circle>
+            <circle class="timer-ring-fg" id="ring-design" cx="75" cy="75" r="66" stroke-dasharray="414.7" stroke-dashoffset="0"></circle>
+          </svg>
+          <div class="timer-readout" id="readout-design">15:00</div>
+        </div>
+        <div class="timer-controls">
+          <div class="timer-label">Design sprint · 15:00</div>
+          <div class="row">
+            <button class="btn btn-primary" data-timer-action="start" data-timer="design">Start</button>
+            <button class="btn btn-ghost" data-timer-action="pause" data-timer="design">Pause</button>
+            <button class="btn btn-ghost" data-timer-action="reset" data-timer="design">Reset</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 23: GROUP PRESENTATION -->
+  <section class="slide content-slide" data-section="04 · Designing the Club">
+    <div class="slide-inner">
+      <p class="eyebrow">Pitch Time</p>
+      <h1 class="headline">One minute per team.</h1>
+      <p class="dek">Each group pitches their club idea and reads out their core chunks. As a group, discuss: how does the environment force those exact phrases?</p>
+      <div class="grid-2">
+        <div class="method-card"><span class="ico">📍</span><h3>Name the location</h3><p>What's the club, and where does it happen?</p></div>
+        <div class="method-card"><span class="ico">💬</span><h3>Read your chunks</h3><p>Say all 3–5 chunks out loud, exactly as a student would use them.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 24: DIVIDER 05 -->
+  <section class="slide divider-slide" data-section="05 · The Chunk Hunt">
+    <div class="slide-inner">
+      <div class="num">05</div>
+      <h1>Outdoor Activity: The Chunk Hunt &amp; Talk</h1>
+      <p class="dek">Movement and a change of scenery help cement vocabulary and lower the affective filter — let's feel it ourselves.</p>
+      <span class="obj-tag">Objective · Learn by walking, not sitting</span>
+    </div>
+    <div class="time-chip">20 MIN</div>
+  </section>
+
+  <!-- 25: INDEX CARD INTRO -->
+  <section class="slide content-slide" data-section="05 · The Chunk Hunt">
+    <div class="slide-inner">
+      <p class="eyebrow">Your Materials</p>
+      <h1 class="headline">One card. Three chunks.</h1>
+      <p class="dek">Each teacher receives an index card with three functional chunks to weave naturally into conversation.</p>
+      <div class="index-card" style="max-width:420px; transform: rotate(-2deg); margin-top:14px;">
+        <span class="chunk-label">Your card</span>
+        <div class="chunk-text">Speaking of...<br>I couldn't agree more.<br>To be honest...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 26: THE WALK -->
+  <section class="slide content-slide" data-section="05 · The Chunk Hunt">
+    <div class="slide-inner">
+      <p class="eyebrow">The Walk</p>
+      <h1 class="headline">Talk while you <em>move</em>.</h1>
+      <p class="dek">Step outside the seminar room. Keep a natural conversation going on any light topic — and seamlessly drop in all three of your chunks before we return.</p>
+      <ul class="step-list">
+        <li><span class="step-num">1</span><span class="step-text">Pair up with someone <b>outside</b> your design team.</span></li>
+        <li><span class="step-num">2</span><span class="step-text">Pick a light topic — weekend plans, favorite food, anything.</span></li>
+        <li><span class="step-num">3</span><span class="step-text">Use all three chunks on your card, <b>naturally</b>, before time's up.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 27: OUTDOOR TIMER -->
+  <section class="slide content-slide" data-section="05 · The Chunk Hunt">
+    <div class="slide-inner">
+      <p class="eyebrow">Walking Time</p>
+      <h1 class="headline">Head outside now.</h1>
+      <p class="dek">Start the timer as you step out. Come back when it hits zero.</p>
+      <div class="timer-widget">
+        <div class="timer-ring-wrap">
+          <svg width="150" height="150" viewBox="0 0 150 150">
+            <circle class="timer-ring-bg" cx="75" cy="75" r="66"></circle>
+            <circle class="timer-ring-fg" id="ring-walk" cx="75" cy="75" r="66" stroke-dasharray="414.7" stroke-dashoffset="0"></circle>
+          </svg>
+          <div class="timer-readout" id="readout-walk">10:00</div>
+        </div>
+        <div class="timer-controls">
+          <div class="timer-label">Chunk hunt walk · 10:00</div>
+          <div class="row">
+            <button class="btn btn-cyan" data-timer-action="start" data-timer="walk">Start</button>
+            <button class="btn btn-ghost" data-timer-action="pause" data-timer="walk">Pause</button>
+            <button class="btn btn-ghost" data-timer-action="reset" data-timer="walk">Reset</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 28: DEBRIEF -->
+  <section class="slide participation-slide" data-section="05 · The Chunk Hunt">
+    <div class="slide-inner">
+      <div class="participation-badge">Group Debrief · 5 Minutes</div>
+      <div class="prompt-card">
+        <p>"Did moving and changing scenery make the chunks feel more natural — or harder to remember? Why?"</p>
+      </div>
+      <div class="mini-timer"><span class="dot"></span> Welcome back — let's discuss as a group</div>
+    </div>
+  </section>
+
+  <!-- 29: DIVIDER 06 -->
+  <section class="slide divider-slide" data-section="06 · Conclusion &amp; Q&amp;A">
+    <div class="slide-inner">
+      <div class="num">06</div>
+      <h1>Conclusion and Q&amp;A</h1>
+      <p class="dek">Summarizing the core message and committing to action for our next off-site club.</p>
+      <span class="obj-tag">Objective · Leave with a plan</span>
+    </div>
+    <div class="time-chip">10 MIN</div>
+  </section>
+
+  <!-- 30: TAKEAWAY -->
+  <section class="slide cta-slide" data-section="06 · Conclusion &amp; Q&amp;A">
+    <div class="slide-inner">
+      <p class="eyebrow">The Takeaway</p>
+      <p class="big">Learning without grammar-first prioritizes <span class="hi">fluency and confidence</span> — exactly what our dynamic, off-site clubs are built for.</p>
+    </div>
+  </section>
+
+  <!-- 31: CALL TO ACTION -->
+  <section class="slide cta-slide" data-section="06 · Conclusion &amp; Q&amp;A">
+    <div class="slide-inner">
+      <p class="eyebrow">Call to Action</p>
+      <p class="big">Plan your <span class="hi">next off-site club</span> entirely around 3 to 5 lexical chunks — before you plan anything else.</p>
+      <div class="index-card" style="max-width:460px; margin: 20px auto 0; text-align:left;">
+        <span class="chunk-label">Due before our next meeting</span>
+        <div class="chunk-text">Location + 3–5 chunks, submitted to your coordinator.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 32: THANK YOU -->
+  <section class="slide title-slide thanks-slide" data-section="06 · Conclusion &amp; Q&amp;A">
+    <div class="slide-inner">
+      <div class="logo-wrap"><img src="https://www.planetenglishqro.com/img/logo_Oneenglish.png" alt="One English logo"></div>
+      <div class="kicker">Thank You</div>
+      <h1>Questions?</h1>
+      <h2>One English Tepic · Building fluent, confident speakers — one chunk at a time.</h2>
+    </div>
+  </section>
+
+</main>
+
+<nav class="controls">
+  <button class="nav-arrow" id="prevBtn" aria-label="Previous slide">‹</button>
+  <div class="progress-dots" id="dots"></div>
+  <button class="nav-arrow" id="nextBtn" aria-label="Next slide">›</button>
+  <button class="icon-btn" id="fullscreenBtn" aria-label="Toggle fullscreen" title="Fullscreen">⛶</button>
+</nav>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============================================================
+     SLIDE NAVIGATION
+     ============================================================ */
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var total = slides.length;
+  var current = 0;
+
+  var slideNumEl = document.getElementById('slideNum');
+  var slideTotalEl = document.getElementById('slideTotal');
+  var sectionLabelEl = document.getElementById('sectionLabel');
+  var progressFillEl = document.getElementById('progressFill');
+  var dotsWrap = document.getElementById('dots');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var fullscreenBtn = document.getElementById('fullscreenBtn');
+
+  slideTotalEl.textContent = total;
+
+  // Build progress dots, marking the first slide of each new section
+  var lastSection = null;
+  slides.forEach(function(slide, i){
+    var sec = slide.getAttribute('data-section');
+    var d = document.createElement('div');
+    d.className = 'dot';
+    if(sec !== lastSection){ d.classList.add('section-start'); lastSection = sec; }
+    d.setAttribute('data-index', i);
+    d.setAttribute('role','button');
+    d.setAttribute('tabindex','0');
+    d.setAttribute('aria-label', 'Go to slide ' + (i+1));
+    d.addEventListener('click', function(){ goTo(i); });
+    d.addEventListener('keydown', function(e){ if(e.key==='Enter' || e.key===' '){ goTo(i); } });
+    dotsWrap.appendChild(d);
+  });
+  var dotEls = Array.prototype.slice.call(dotsWrap.children);
+
+  function render(){
+    slides.forEach(function(s, i){ s.classList.toggle('active', i === current); });
+    slideNumEl.textContent = current + 1;
+    sectionLabelEl.textContent = slides[current].getAttribute('data-section') || '';
+    progressFillEl.style.width = ((current + 1) / total * 100) + '%';
+    dotEls.forEach(function(d, i){ d.classList.toggle('current', i === current); });
+    var activeDot = dotEls[current];
+    if(activeDot && activeDot.scrollIntoView){
+      activeDot.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
+    }
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total - 1;
+  }
+
+  function goTo(i){
+    if(i < 0 || i >= total) return;
+    current = i;
+    render();
+  }
+  function next(){ goTo(current + 1); }
+  function prev(){ goTo(current - 1); }
+
+  prevBtn.addEventListener('click', prev);
+  nextBtn.addEventListener('click', next);
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown'){ e.preventDefault(); next(); }
+    else if(e.key === 'ArrowLeft' || e.key === 'PageUp'){ e.preventDefault(); prev(); }
+    else if(e.key === 'Home'){ goTo(0); }
+    else if(e.key === 'End'){ goTo(total - 1); }
+  });
+
+  // basic touch swipe support
+  var touchStartX = null;
+  document.addEventListener('touchstart', function(e){ touchStartX = e.changedTouches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    if(touchStartX === null) return;
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    if(Math.abs(dx) > 50){ dx < 0 ? next() : prev(); }
+    touchStartX = null;
+  }, {passive:true});
+
+  fullscreenBtn.addEventListener('click', function(){
+    if(!document.fullscreenElement){
+      document.documentElement.requestFullscreen().catch(function(){});
+    } else {
+      document.exitFullscreen();
+    }
+  });
+
+  render();
+
+  /* ============================================================
+     REVEAL BUTTONS (photo analysis chunk answers)
+     ============================================================ */
+  document.querySelectorAll('.reveal-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var target = document.getElementById(btn.getAttribute('data-reveal'));
+      if(!target) return;
+      var opening = !target.classList.contains('open');
+      target.classList.toggle('open');
+      btn.textContent = opening ? 'Hide our picks' : 'Reveal our picks';
+    });
+  });
+
+  /* ============================================================
+     ACTIVITY TIMERS
+     ============================================================ */
+  var TIMERS = {
+    design: { total: 15 * 60, remaining: 15 * 60, running:false, interval:null, ring: document.getElementById('ring-design'), readout: document.getElementById('readout-design') },
+    walk:   { total: 10 * 60, remaining: 10 * 60, running:false, interval:null, ring: document.getElementById('ring-walk'), readout: document.getElementById('readout-walk') }
+  };
+  var CIRC = 2 * Math.PI * 66; // ~414.69
+
+  function formatTime(s){
+    var m = Math.floor(s / 60);
+    var sec = s % 60;
+    return (m < 10 ? '0' : '') + m + ':' + (sec < 10 ? '0' : '') + sec;
+  }
+
+  function updateTimerDisplay(key){
+    var t = TIMERS[key];
+    if(!t.ring || !t.readout) return;
+    t.readout.textContent = formatTime(t.remaining);
+    var frac = t.remaining / t.total;
+    var offset = CIRC * (1 - frac);
+    t.ring.style.strokeDashoffset = offset;
+    if(t.remaining <= 0){
+      t.readout.style.color = '#ff6b5b';
+    } else {
+      t.readout.style.color = '';
+    }
+  }
+
+  function startTimer(key){
+    var t = TIMERS[key];
+    if(t.running) return;
+    t.running = true;
+    t.interval = setInterval(function(){
+      if(t.remaining > 0){
+        t.remaining -= 1;
+        updateTimerDisplay(key);
+      } else {
+        clearInterval(t.interval);
+        t.running = false;
+      }
+    }, 1000);
+  }
+  function pauseTimer(key){
+    var t = TIMERS[key];
+    t.running = false;
+    clearInterval(t.interval);
+  }
+  function resetTimer(key){
+    var t = TIMERS[key];
+    pauseTimer(key);
+    t.remaining = t.total;
+    updateTimerDisplay(key);
+  }
+
+  document.querySelectorAll('[data-timer-action]').forEach(function(btn){
+    var action = btn.getAttribute('data-timer-action');
+    var key = btn.getAttribute('data-timer');
+    btn.addEventListener('click', function(){
+      if(action === 'start') startTimer(key);
+      else if(action === 'pause') pauseTimer(key);
+      else if(action === 'reset') resetTimer(key);
+    });
+  });
+
+  Object.keys(TIMERS).forEach(function(key){ updateTimerDisplay(key); });
+
+  /* ============================================================
+     AMBIENT FLOATING CHUNKS
+     ============================================================ */
+  var ambientPhrases = [
+    "I've been meaning to...", "Speaking of...", "To be honest...",
+    "Could we get the check?", "You nailed it!", "Long time no see!",
+    "I couldn't agree more.", "What's your go-to?", "Is it a boy or a girl?",
+    "Fancy seeing you here.", "That reminds me...", "Would you mind if...?"
+  ];
+  var ambientBg = document.getElementById('ambientBg');
+  ambientPhrases.forEach(function(phrase, i){
+    var el = document.createElement('div');
+    el.className = 'floating-chunk';
+    el.textContent = phrase;
+    el.style.top = (Math.random() * 90) + 'vh';
+    el.style.left = (Math.random() * 88) + 'vw';
+    el.style.animationDuration = (24 + Math.random() * 20) + 's';
+    el.style.animationDelay = (-Math.random() * 20) + 's';
+    el.style.fontSize = (1.6 + Math.random() * 1.6) + 'rem';
+    ambientBg.appendChild(el);
+  });
+
+})();
+</script>
+
 </body>
 </html>
