@@ -138,7 +138,7 @@ button{ font-family: inherit; cursor:pointer; }
 .slide{
   position:absolute; inset:0;
   display:flex; flex-direction:column; align-items:center; justify-content:center;
-  padding: 100px 8vw 90px;
+  padding: 100px 8vw 130px;
   opacity:0; visibility:hidden;
   transform: translateY(24px) scale(.985);
   transition: opacity .55s var(--ease), transform .6s var(--ease), visibility 0s linear .6s;
@@ -306,6 +306,22 @@ h1.headline em{ color: var(--cyan-soft); font-style:normal; }
   display:block;
   font-family: var(--font-display); font-size:.74rem; letter-spacing:.14em; text-transform:uppercase;
   color: var(--ink-soft); margin-bottom:8px; font-weight:700;
+}
+
+.card-grid{
+  display:grid; grid-template-columns: repeat(3,1fr); gap:22px; width:100%; margin-top:18px;
+}
+.card-grid .index-card{ padding: 20px 20px 16px; }
+.card-grid .index-card .chunk-text{ font-size: 1.42rem; line-height:1.42; }
+.card-grid .index-card:nth-child(1){ transform: rotate(-1.6deg); }
+.card-grid .index-card:nth-child(2){ transform: rotate(1deg); }
+.card-grid .index-card:nth-child(3){ transform: rotate(-0.8deg); }
+.card-grid .index-card:nth-child(4){ transform: rotate(1.4deg); }
+.card-grid .index-card:nth-child(5){ transform: rotate(-1.1deg); }
+.card-grid .index-card:nth-child(6){ transform: rotate(0.7deg); }
+.copy-hint{
+  font-family: var(--font-display); font-size:.82rem; letter-spacing:.06em; text-transform:uppercase;
+  color: var(--amber); margin-top:20px; display:flex; align-items:center; gap:8px;
 }
 
 /* ============================================================
@@ -496,19 +512,22 @@ h1.headline em{ color: var(--cyan-soft); font-style:normal; }
 
 /* footer nav */
 .controls{
-  position: fixed; bottom: 22px; left:50%; transform: translateX(-50%);
+  position: fixed; bottom: 18px; left:50%; transform: translateX(-50%);
   display:flex; align-items:center; gap:16px;
   background: rgba(16,23,41,0.72);
   border: 1px solid var(--line);
   backdrop-filter: blur(10px);
-  padding: 10px 16px;
+  padding: 8px 14px;
   border-radius: 999px;
   z-index: 40;
+  opacity: .55;
+  transition: opacity .3s var(--ease), transform .3s var(--ease);
 }
+.controls:hover, .controls:focus-within{ opacity: 1; transform: translateX(-50%) translateY(0); }
 .controls button.nav-arrow{
-  width:38px; height:38px; border-radius:50%; border:none;
+  width:34px; height:34px; border-radius:50%; border:none;
   background: rgba(250,246,236,0.08); color: var(--cream);
-  font-size:1.1rem; display:flex; align-items:center; justify-content:center;
+  font-size:1.05rem; display:flex; align-items:center; justify-content:center;
   transition: background .2s, transform .2s;
 }
 .controls button.nav-arrow:hover{ background: var(--cyan); color: var(--navy-deep); transform: scale(1.06); }
@@ -527,8 +546,8 @@ h1.headline em{ color: var(--cyan-soft); font-style:normal; }
 .dot:hover{ background: var(--cyan-soft); }
 
 .icon-btn{
-  width:38px; height:38px; border-radius:50%; border:none; background: rgba(250,246,236,0.08); color: var(--cream);
-  display:flex; align-items:center; justify-content:center; font-size:1rem; transition: background .2s;
+  width:34px; height:34px; border-radius:50%; border:none; background: rgba(250,246,236,0.08); color: var(--cream);
+  display:flex; align-items:center; justify-content:center; font-size:.95rem; transition: background .2s;
 }
 .icon-btn:hover{ background: var(--cyan); color: var(--navy-deep); }
 
@@ -561,7 +580,7 @@ h1.headline em{ color: var(--cyan-soft); font-style:normal; }
 @media (max-width: 900px){
   .two-col, .grid-3, .grid-2, .contrast-wrap, .agenda-grid{ grid-template-columns: 1fr; }
   .contrast-wrap .vs-arrow{ justify-self:center; }
-  .slide{ padding: 90px 6vw 130px; }
+  .slide{ padding: 90px 6vw 160px; }
   .timer-widget{ flex-direction:column; }
   .deck-chrome{ padding: 14px 18px; }
   .section-label{ display:none; }
@@ -886,6 +905,23 @@ a:focus-visible, button:focus-visible, .dot:focus-visible{
     </div>
   </section>
 
+  <!-- 18b: TECHNIQUES FOR PRACTICING CHUNKS -->
+  <section class="slide content-slide" data-section="03 · What Are Lexical Chunks?">
+    <div class="slide-inner">
+      <p class="eyebrow">Putting It Into Practice</p>
+      <h1 class="headline">Five ways to <em>drill</em> a chunk.</h1>
+      <p class="dek">Knowing the theory isn't enough — here are the techniques we'll actually use in clubs to make chunks stick.</p>
+      <div class="grid-3">
+        <div class="method-card"><span class="ico">🔁</span><h3>Substitution Slots</h3><p>Keep the chunk frame fixed and swap one piece: "I've been learning <u>[guitar]</u> for <u>[two years]</u>." Students rotate through 4–5 versions.</p></div>
+        <div class="method-card"><span class="ico">⛓️</span><h3>Chunk Chains</h3><p>One student says a chunk, the next must reply using a different chunk that logically follows — building a mini real conversation.</p></div>
+        <div class="method-card"><span class="ico">🎭</span><h3>Role-Play Drop-In</h3><p>Assign a scene (shelter, karaoke, restaurant) and a chunk card. Students must "drop" their chunk naturally into the role-play.</p></div>
+        <div class="method-card"><span class="ico">👂</span><h3>Echo &amp; Shadow</h3><p>Teacher says a chunk with natural rhythm and intonation; students echo it immediately, copying the music of the phrase, not just the words.</p></div>
+        <div class="method-card"><span class="ico">🧩</span><h3>Mingle &amp; Match</h3><p>Half the room holds chunk starters, half holds natural responses. Students mingle until they find their matching partner.</p></div>
+        <div class="method-card"><span class="ico">🃏</span><h3>Chunk Bingo</h3><p>Students tick off a bingo card as they hear classmates use assigned chunks naturally in conversation — first full row wins.</p></div>
+      </div>
+    </div>
+  </section>
+
   <!-- 19: DIVIDER 04 -->
   <section class="slide divider-slide" data-section="04 · Designing the Club">
     <div class="slide-inner">
@@ -983,12 +1019,36 @@ a:focus-visible, button:focus-visible, .dot:focus-visible{
   <!-- 25: INDEX CARD INTRO -->
   <section class="slide content-slide" data-section="05 · The Chunk Hunt">
     <div class="slide-inner">
-      <p class="eyebrow">Your Materials</p>
-      <h1 class="headline">One card. Three chunks.</h1>
-      <p class="dek">Each teacher receives an index card with three functional chunks to weave naturally into conversation.</p>
-      <div class="index-card" style="max-width:420px; transform: rotate(-2deg); margin-top:14px;">
-        <span class="chunk-label">Your card</span>
-        <div class="chunk-text">Speaking of...<br>I couldn't agree more.<br>To be honest...</div>
+      <p class="eyebrow">Your Materials · No Printed Cards Needed</p>
+      <h1 class="headline">Pick a card. Copy it down.</h1>
+      <p class="dek">No physical cards on hand? No problem — grab a pen, choose one card below, and jot its three chunks on any scrap of paper before you head outside.</p>
+      <div class="card-grid">
+        <div class="index-card"><span class="chunk-label">Card 1</span><div class="chunk-text">Speaking of...<br>I couldn't agree more.<br>To be honest...</div></div>
+        <div class="index-card"><span class="chunk-label">Card 2</span><div class="chunk-text">By the way...<br>That makes sense.<br>Come to think of it...</div></div>
+        <div class="index-card"><span class="chunk-label">Card 3</span><div class="chunk-text">Anyway...<br>I see what you mean.<br>Now that you mention it...</div></div>
+        <div class="index-card"><span class="chunk-label">Card 4</span><div class="chunk-text">Actually...<br>Fair enough.<br>If I'm honest...</div></div>
+        <div class="index-card"><span class="chunk-label">Card 5</span><div class="chunk-text">On another note...<br>That's a good point.<br>Now I think about it...</div></div>
+        <div class="index-card"><span class="chunk-label">Card 6</span><div class="chunk-text">Before I forget...<br>I hear what you're saying.<br>Honestly speaking...</div></div>
+      </div>
+      <div class="copy-hint">✏️ Each pair should pick a <em style="font-style:normal; color:var(--cream);">different</em> card — variety keeps the walk-and-talk fresh.</div>
+    </div>
+  </section>
+
+  <!-- 25b: TWO LISTS FOR THE CONVERSATION -->
+  <section class="slide content-slide" data-section="05 · The Chunk Hunt">
+    <div class="slide-inner">
+      <p class="eyebrow">Alternative Setup · Pair Lists</p>
+      <h1 class="headline">Or split into <em>List A</em> and <em>List B</em>.</h1>
+      <p class="dek">Prefer a simpler setup? Divide the room in half. Each side copies their list — then partners naturally have to listen for each other's chunks during the walk.</p>
+      <div class="two-col">
+        <div class="index-card" style="transform: rotate(-1deg);">
+          <span class="chunk-label">List A · Copy this if you're on the left</span>
+          <div class="chunk-text">Speaking of...<br>I couldn't agree more.<br>To be honest...<br>By the way...<br>Now that you mention it...</div>
+        </div>
+        <div class="index-card" style="transform: rotate(1deg);">
+          <span class="chunk-label">List B · Copy this if you're on the right</span>
+          <div class="chunk-text">That makes sense.<br>Come to think of it...<br>Fair enough.<br>Honestly speaking...<br>That's a good point.</div>
+        </div>
       </div>
     </div>
   </section>
