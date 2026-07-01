@@ -3,16 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>One English Tepic: Lexical Chunks Workshop</title>
+    <title>One English Tepic: Advanced Lexical Chunks Workshop</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    
     <style>
+        :root {
+            --bg-color: #0f172a; /* Slate 900 */
+            --text-main: #f8fafc;
+            --accent-blue: #38bdf8;
+            --accent-pink: #ec4899;
+            --accent-purple: #a855f7;
+            --accent-green: #22c55e;
+            --accent-yellow: #eab308;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
             overflow: hidden;
-            background-color: #0f172a; /* Slate 900 */
-            color: #f8fafc;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* Canvas Background */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        #presentation {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
         }
         
         .slide {
@@ -23,14 +58,15 @@
             height: 100%;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
-            transform: scale(0.95) translateY(20px);
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: scale(0.9) translateY(40px);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 4rem;
             box-sizing: border-box;
+            z-index: 1;
         }
 
         .slide.active {
@@ -40,494 +76,276 @@
             z-index: 10;
         }
 
-        /* Background decorations */
-        .bg-shape {
-            position: absolute;
-            filter: blur(80px);
-            opacity: 0.5;
-            z-index: -1;
-            animation: float 10s infinite alternate;
-        }
-        .shape-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: radial-gradient(circle, rgba(56,189,248,0.4) 0%, rgba(15,23,42,0) 70%); }
-        .shape-2 { bottom: -10%; right: -10%; width: 40vw; height: 40vw; background: radial-gradient(circle, rgba(236,72,153,0.3) 0%, rgba(15,23,42,0) 70%); }
+        .slide.prev-slide { transform: scale(1.1) translateX(-100px); }
+        .slide.next-slide { transform: scale(0.9) translateX(100px); }
 
-        @keyframes float {
-            0% { transform: translateY(0) scale(1); }
-            100% { transform: translateY(20px) scale(1.05); }
-        }
-
-        /* Glassmorphism */
         .glass {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
+        
+        .glass-panel {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
 
-        /* Interactive Reveals */
+        .gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .bg-shape {
+            position: absolute;
+            filter: blur(100px);
+            opacity: 0.4;
+            z-index: -1;
+            border-radius: 50%;
+            animation: float 15s infinite alternate ease-in-out;
+        }
+        .shape-1 { top: -15%; left: -10%; width: 60vw; height: 60vw; background: radial-gradient(circle, var(--accent-blue) 0%, transparent 70%); }
+        .shape-2 { bottom: -15%; right: -10%; width: 50vw; height: 50vw; background: radial-gradient(circle, var(--accent-pink) 0%, transparent 70%); animation-delay: -5s; }
+        .shape-3 { top: 40%; left: 40%; width: 30vw; height: 30vw; background: radial-gradient(circle, var(--accent-purple) 0%, transparent 70%); animation-delay: -10s; opacity: 0.2;}
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        .stagger-1 { animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0; }
+        .stagger-2 { animation: fadeInUp 0.6s ease forwards; animation-delay: 0.4s; opacity: 0; }
+        .stagger-3 { animation: fadeInUp 0.6s ease forwards; animation-delay: 0.6s; opacity: 0; }
+        
+        .active .stagger-1, .active .stagger-2, .active .stagger-3 { animation-play-state: running; }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
         .chunk-item {
             opacity: 0;
-            transform: translateX(-20px);
-            transition: all 0.4s ease;
+            transform: translateX(-30px);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-height: 0;
+            overflow: hidden;
+            margin-bottom: 0;
         }
         .chunk-item.revealed {
             opacity: 1;
             transform: translateX(0);
+            max-height: 100px;
+            margin-bottom: 1rem;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
         }
 
-        /* Presenter Notes Panel */
-        #notes-panel {
-            position: fixed;
-            bottom: -100%;
-            left: 0;
-            width: 100%;
-            height: 35vh;
-            background: #1e293b;
-            border-top: 4px solid #38bdf8;
-            z-index: 50;
-            transition: bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 2rem;
-            box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
-            overflow-y: auto;
-        }
-        #notes-panel.open {
-            bottom: 0;
-        }
-
-        /* Controls */
-        #controls {
-            z-index: 40;
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            display: flex;
-            gap: 1rem;
-        }
-
-        .btn-nav {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            color: white;
-            padding: 1rem;
-            border-radius: 50%;
+        .flip-card {
+            background-color: transparent;
+            perspective: 1000px;
             cursor: pointer;
-            transition: all 0.2s;
         }
-        .btn-nav:hover {
-            background: rgba(56,189,248,0.5);
-            transform: scale(1.1);
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
         }
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+        .flip-card-front { background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2); }
+        .flip-card-back { background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); transform: rotateY(180deg); }
 
-        #progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #38bdf8, #ec4899);
-            width: 0%;
-            transition: width 0.3s ease;
-            z-index: 50;
+        .timer-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            font-family: monospace;
+            background: rgba(0,0,0,0.3);
+            position: relative;
         }
+        
+        #controls { z-index: 60; position: fixed; bottom: 2rem; right: 2rem; display: flex; gap: 1rem; background: rgba(0,0,0,0.4); padding: 0.5rem; border-radius: 3rem; backdrop-filter: blur(10px); border: 1px solid var(--glass-border); }
+        .btn-nav { background: transparent; color: white; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; }
+        .btn-nav:hover { background: rgba(255,255,255,0.2); }
+
+        #progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 6px; z-index: 50; }
+        #progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent-blue), var(--accent-pink)); width: 0%; transition: width 0.4s; }
+
+        #notes-panel {
+            position: fixed; bottom: -100%; left: 0; width: 100%; height: 40vh;
+            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); border-top: 4px solid var(--accent-blue);
+            z-index: 55; transition: bottom 0.5s; padding: 2.5rem;
+        }
+        #notes-panel.open { bottom: 0; }
     </style>
 </head>
 <body>
 
+    <canvas id="particle-canvas"></canvas>
     <div class="bg-shape shape-1"></div>
     <div class="bg-shape shape-2"></div>
-    <div id="progress-bar"></div>
+    <div class="bg-shape shape-3"></div>
+    
+    <div id="progress-container"><div id="progress-bar"></div></div>
 
-    <!-- Controls -->
     <div id="controls">
         <button class="btn-nav" id="btn-prev" onclick="prevSlide()"><i data-lucide="chevron-left"></i></button>
         <button class="btn-nav" id="btn-notes" onclick="toggleNotes()"><i data-lucide="book-open"></i></button>
         <button class="btn-nav" id="btn-next" onclick="nextSlide()"><i data-lucide="chevron-right"></i></button>
     </div>
 
-    <!-- Notes Panel -->
     <div id="notes-panel">
-        <div class="flex justify-between items-start mb-4">
-            <h3 class="text-2xl font-bold text-sky-400"><i data-lucide="mic" class="inline mb-1 mr-2"></i>Speaker Notes</h3>
-            <button onclick="toggleNotes()" class="text-gray-400 hover:text-white"><i data-lucide="x"></i></button>
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-3xl font-bold text-sky-400">Presenter Notes</h3>
+            <button onclick="toggleNotes()" class="text-gray-400"><i data-lucide="x"></i></button>
         </div>
-        <div id="notes-content" class="text-lg text-gray-200 leading-relaxed font-light">
-            <!-- Notes injected here via JS -->
-        </div>
+        <div id="notes-content" class="text-xl text-gray-200"></div>
     </div>
 
-    <!-- SLIDES CONTAINER -->
     <div id="presentation">
-
-        <!-- Slide 1: Hook -->
+        <!-- Slide 1 -->
         <div class="slide active">
-            <div class="glass p-12 rounded-3xl text-center max-w-4xl w-full">
-                <h2 class="text-sky-400 font-bold tracking-widest uppercase mb-4">One English Tepic</h2>
-                <h1 class="text-5xl md:text-7xl font-extrabold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-pink-500 leading-tight">
-                    Lexical Chunks Workshop
-                </h1>
-                <div class="text-3xl font-light italic text-gray-300 mt-12 px-8 border-l-4 border-pink-500">
-                    "Language is grammaticalised lexis, not lexicalised grammar."
-                </div>
+            <div class="glass p-16 rounded-3xl text-center max-w-4xl w-full">
+                <img src="https://www.planetenglishqro.com/img/logo_Oneenglish.png" alt="Logo" class="w-64 mx-auto mb-10">
+                <h1 class="text-7xl font-extrabold mb-8 gradient-text bg-gradient-to-r from-sky-300 via-pink-400 to-purple-400">Lexical Chunks Workshop</h1>
+                <p class="text-2xl text-gray-400">Mastering Fluency over Form</p>
             </div>
         </div>
 
-        <!-- Slide 2: Methodology -->
+        <!-- Slide 2: Philosophy -->
         <div class="slide">
-            <div class="max-w-6xl w-full flex flex-col md:flex-row items-center gap-12">
-                <div class="flex-1">
-                    <h1 class="text-5xl font-bold mb-6 text-white">Our Approach:<br><span class="text-sky-400">Visualizing the Context</span></h1>
-                    <p class="text-2xl text-gray-300 mb-8 font-light">
-                        One English Tepic clubs are <strong class="text-pink-400">immersive experiences</strong>, not traditional classroom sessions.
-                    </p>
-                    <ul class="space-y-4 text-xl">
-                        <li class="flex items-center gap-3"><i data-lucide="check-circle" class="text-sky-400"></i> Vocabulary drives meaning.</li>
-                        <li class="flex items-center gap-3"><i data-lucide="check-circle" class="text-sky-400"></i> Grammar is a later categorization.</li>
-                        <li class="flex items-center gap-3"><i data-lucide="check-circle" class="text-sky-400"></i> Standardizing our off-site methodology.</li>
-                    </ul>
-                </div>
-                <div class="flex-1 glass p-4 rounded-2xl">
-                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="Team collaborating" class="rounded-xl w-full h-auto object-cover aspect-video">
-                </div>
+            <div class="glass p-16 max-w-4xl w-full text-center">
+                <h2 class="text-5xl font-bold mb-10">The Core Philosophy</h2>
+                <p class="text-3xl italic text-sky-300">"Language is grammaticalised lexis, not lexicalised grammar."</p>
+                <div class="mt-8 text-xl text-gray-300">Michael Lewis</div>
             </div>
         </div>
 
-        <!-- Slide 3: Photo Analysis 1 -->
+        <!-- Slide 3: Scenario 1 - Shelter -->
         <div class="slide">
-            <h1 class="text-4xl font-bold mb-10 text-center w-full">Extraction #1: <span class="text-sky-400">Animal Shelter</span></h1>
-            <div class="max-w-6xl w-full flex flex-col md:flex-row gap-8">
-                <div class="flex-1 rounded-2xl overflow-hidden shadow-2xl">
-                    <img src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=800&q=80" alt="Animal Shelter" class="w-full h-full object-cover">
-                </div>
-                <div class="flex-1 flex flex-col justify-center glass p-10 rounded-2xl">
-                    <h3 class="text-3xl mb-6 font-semibold">What chunks would students need <span class="text-pink-400 text-underline">right here</span>?</h3>
-                    <button class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-4 px-8 rounded-full mb-8 transition-transform transform hover:scale-105 text-xl w-full shadow-lg shadow-sky-500/30" onclick="revealChunks(this)">
-                        Reveal Chunks <i data-lucide="eye" class="inline ml-2"></i>
-                    </button>
-                    <div class="chunk-container space-y-4">
-                        <div class="chunk-item bg-gray-800 p-4 rounded-xl text-2xl font-medium border-l-4 border-sky-400">"Is it a boy or a girl?"</div>
-                        <div class="chunk-item bg-gray-800 p-4 rounded-xl text-2xl font-medium border-l-4 border-pink-400">"Can I hold him?"</div>
-                        <div class="chunk-item bg-gray-800 p-4 rounded-xl text-2xl font-medium border-l-4 border-yellow-400">"He's so well-behaved."</div>
-                    </div>
+            <h1 class="text-5xl font-bold mb-8">Scenario: Animal Shelter</h1>
+            <div class="max-w-4xl w-full glass p-8 rounded-2xl flex flex-col items-center">
+                <img src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=800&q=80" class="rounded-xl mb-6 shadow-2xl">
+                <button class="bg-sky-500 py-3 px-8 rounded-full mb-6" onclick="revealChunks(this)">Reveal Chunks</button>
+                <div class="chunk-container w-full">
+                    <div class="chunk-item bg-gray-800 p-4 rounded text-xl border-l-4 border-sky-400">"Is it a boy or a girl?"</div>
+                    <div class="chunk-item bg-gray-800 p-4 rounded text-xl border-l-4 border-pink-400">"Can I hold him?"</div>
                 </div>
             </div>
         </div>
 
-        <!-- Slide 4: Photo Analysis 2 -->
+        <!-- Slide 4: Scenario 2 - Karaoke (Fixed URL) -->
         <div class="slide">
-            <h1 class="text-4xl font-bold mb-10 text-center w-full">Extraction #2: <span class="text-pink-400">Karaoke Night</span></h1>
-            <div class="max-w-6xl w-full flex flex-col md:flex-row gap-8">
-                <div class="flex-1 rounded-2xl overflow-hidden shadow-2xl">
-                    <img src="https://images.unsplash.com/photo-1516280440502-86111fdb4f43?auto=format&fit=crop&w=800&q=80" alt="Karaoke" class="w-full h-full object-cover">
-                </div>
-                <div class="flex-1 flex flex-col justify-center glass p-10 rounded-2xl">
-                    <h3 class="text-3xl mb-6 font-semibold">What chunks would students need <span class="text-sky-400 text-underline">right here</span>?</h3>
-                    <button class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-4 px-8 rounded-full mb-8 transition-transform transform hover:scale-105 text-xl w-full shadow-lg shadow-pink-500/30" onclick="revealChunks(this)">
-                        Reveal Chunks <i data-lucide="eye" class="inline ml-2"></i>
-                    </button>
-                    <div class="chunk-container space-y-4">
-                        <div class="chunk-item bg-gray-800 p-4 rounded-xl text-2xl font-medium border-l-4 border-sky-400">"What's your go-to song?"</div>
-                        <div class="chunk-item bg-gray-800 p-4 rounded-xl text-2xl font-medium border-l-4 border-pink-400">"I'm up next."</div>
-                        <div class="chunk-item bg-gray-800 p-4 rounded-xl text-2xl font-medium border-l-4 border-yellow-400">"You nailed it!"</div>
-                    </div>
+            <h1 class="text-5xl font-bold mb-8">Scenario: Karaoke</h1>
+            <div class="max-w-4xl w-full glass p-8 rounded-2xl flex flex-col items-center">
+                <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80" class="rounded-xl mb-6 shadow-2xl">
+                <button class="bg-pink-500 py-3 px-8 rounded-full mb-6" onclick="revealChunks(this)">Reveal Chunks</button>
+                <div class="chunk-container w-full">
+                    <div class="chunk-item bg-gray-800 p-4 rounded text-xl border-l-4 border-sky-400">"What's your go-to song?"</div>
+                    <div class="chunk-item bg-gray-800 p-4 rounded text-xl border-l-4 border-pink-400">"You nailed it!"</div>
                 </div>
             </div>
         </div>
 
-        <!-- Slide 5: Photo Analysis 3 -->
+        <!-- Slide 5: Participation Activity -->
         <div class="slide">
-            <h1 class="text-4xl font-bold mb-10 text-center w-full">Extraction #3: <span class="text-yellow-400">Restaurant</span></h1>
-            <div class="max-w-6xl w-full flex flex-col md:flex-row gap-8">
-                <div class="flex-1 rounded-2xl overflow-hidden shadow-2xl">
-                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80" alt="Restaurant" class="w-full h-full object-cover">
-                </div>
-                <div class="flex-1 flex flex-col justify-center glass p-10 rounded-2xl">
-                    <h3 class="text-3xl mb-6 font-semibold">What chunks would students need <span class="text-pink-400 text-underline">right here</span>?</h3>
-                    <button class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-4 px-8 rounded-full mb-8 transition-transform transform hover:scale-105 text-xl w-full shadow-lg shadow-yellow-500/30" onclick="revealChunks(this)">
-                        Reveal Chunks <i data-lucide="eye" class="inline ml-2"></i>
-                    </button>
-                    <div class="chunk-container space-y-4">
-                        <div class="chunk-item bg-gray-800 p-4 rounded-xl text-2xl font-medium border-l-4 border-sky-400">"Could we get the check, please?"</div>
-                        <div class="chunk-item bg-gray-800 p-4 rounded-xl text-2xl font-medium border-l-4 border-pink-400">"I'll have what he's having."</div>
-                        <div class="chunk-item bg-gray-800 p-4 rounded-xl text-2xl font-medium border-l-4 border-yellow-400">"Does this come with fries?"</div>
-                    </div>
-                </div>
+            <h1 class="text-5xl font-bold mb-8">Group Task: Design a Club</h1>
+            <div class="grid grid-cols-3 gap-6 max-w-5xl w-full">
+                <div class="glass p-6 rounded-2xl border-t-4 border-sky-500">1. Pick Location</div>
+                <div class="glass p-6 rounded-2xl border-t-4 border-pink-500">2. Define Chunks</div>
+                <div class="glass p-6 rounded-2xl border-t-4 border-yellow-500">3. Pitch Activity</div>
             </div>
+            <div class="timer-circle mt-10" id="timer-display">05:00</div>
+            <button class="mt-4 bg-white/20 px-6 py-2 rounded-full" onclick="startTimer(5)">Start Timer</button>
         </div>
 
-        <!-- Slide 6: Deep Dive -->
+        <!-- Slide 6: Debrief -->
         <div class="slide">
-            <div class="max-w-5xl w-full text-center">
-                <h1 class="text-5xl font-bold mb-12 text-white">Deep Dive: What are <span class="text-sky-400">Lexical Chunks</span>?</h1>
-                
-                <p class="text-2xl mb-12 text-gray-300 glass p-6 rounded-xl inline-block">
-                    Groups of words processed by the brain as a <span class="text-pink-400 font-bold">single unit of meaning</span>, bypassing grammatical analysis.
-                </p>
-
-                <div class="flex flex-col md:flex-row gap-8 justify-center items-stretch mt-8">
-                    <!-- Traditional -->
-                    <div class="flex-1 glass p-8 rounded-2xl border-t-4 border-red-500 relative overflow-hidden">
-                        <div class="absolute top-0 right-0 bg-red-500 text-white text-sm py-1 px-3 rounded-bl-lg font-bold">Traditional</div>
-                        <h3 class="text-2xl font-bold mb-6 mt-4 text-gray-400">Building from scratch:</h3>
-                        <div class="flex justify-center items-center gap-2 text-xl font-mono bg-black/40 p-4 rounded-lg">
-                            <span class="text-red-400">"I"</span> + <span class="text-red-400">"have"</span> + <span class="text-red-400">"been"</span> + <span class="text-red-400">"learning"</span>
-                        </div>
-                        <p class="mt-4 text-gray-400 text-sm italic">High cognitive load. Slow processing.</p>
-                    </div>
-
-                    <!-- Lexical -->
-                    <div class="flex-1 glass p-8 rounded-2xl border-t-4 border-green-500 relative overflow-hidden transform scale-105 shadow-2xl shadow-green-500/20">
-                        <div class="absolute top-0 right-0 bg-green-500 text-white text-sm py-1 px-3 rounded-bl-lg font-bold">Lexical</div>
-                        <h3 class="text-2xl font-bold mb-6 mt-4 text-white">Plugging in blocks:</h3>
-                        <div class="flex justify-center items-center gap-2 text-xl font-mono bg-black/40 p-4 rounded-lg flex-wrap">
-                            <span class="bg-green-500/20 text-green-300 px-3 py-1 rounded border border-green-500">[I've been learning...]</span> + 
-                            <span class="text-white border border-dashed border-gray-500 px-3 py-1 rounded">[topic]</span> + 
-                            <span class="bg-green-500/20 text-green-300 px-3 py-1 rounded border border-green-500">[for X years]</span>
-                        </div>
-                        <p class="mt-4 text-green-200 text-sm italic">Low cognitive load. Instant fluency.</p>
-                    </div>
-                </div>
+            <h1 class="text-5xl font-bold mb-8">Debrief & Next Steps</h1>
+            <div class="glass p-10 max-w-3xl w-full">
+                <p class="text-2xl mb-6">"Learning without grammar" is not about ignoring rules entirely. It’s about prioritizing student fluency and confidence first.</p>
+                <p class="text-xl text-sky-400 font-bold">Challenge: Plan your next club around 5 lexical chunks.</p>
             </div>
         </div>
-
-        <!-- Slide 7: Active Participation -->
-        <div class="slide">
-            <div class="glass p-12 rounded-3xl w-full max-w-5xl">
-                <div class="flex items-center gap-6 mb-8">
-                    <div class="bg-sky-500 p-4 rounded-2xl"><i data-lucide="users" class="w-10 h-10 text-white"></i></div>
-                    <h1 class="text-5xl font-bold text-white">Active Participation</h1>
-                </div>
-                <h2 class="text-3xl text-pink-400 mb-6 font-semibold">Challenge: Designing the Lexical Club</h2>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <div class="bg-white/5 p-6 rounded-xl border border-white/10">
-                        <div class="text-sky-400 font-bold text-xl mb-2">1. Group Up</div>
-                        <p class="text-gray-300">Form small teams of 3-4 people.</p>
-                    </div>
-                    <div class="bg-white/5 p-6 rounded-xl border border-white/10">
-                        <div class="text-sky-400 font-bold text-xl mb-2">2. Invent a Location</div>
-                        <p class="text-gray-300">e.g., Bowling alley, museum, supermarket.</p>
-                    </div>
-                    <div class="bg-white/5 p-6 rounded-xl border border-white/10">
-                        <div class="text-sky-400 font-bold text-xl mb-2">3. Extract Chunks</div>
-                        <p class="text-gray-300">Select 3-5 core lexical chunks for the activity.</p>
-                    </div>
-                </div>
-
-                <div class="bg-gradient-to-r from-sky-900 to-pink-900 p-6 rounded-xl text-center shadow-inner">
-                    <p class="text-2xl text-white font-medium">Be prepared to <span class="text-sky-300 font-bold">pitch your idea</span> and explain how the environment naturally forces the use of these phrases!</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 8: Outdoor Activity -->
-        <div class="slide">
-             <div class="max-w-6xl w-full flex flex-col md:flex-row gap-12 items-center">
-                <div class="flex-1">
-                    <h1 class="text-5xl font-bold mb-6 text-white">The Chunk Hunt & Talk</h1>
-                    <h2 class="text-2xl text-sky-400 mb-8">Outdoor Application Activity</h2>
-                    
-                    <ul class="space-y-6 text-xl text-gray-200">
-                        <li class="flex gap-4">
-                            <span class="bg-pink-500 w-8 h-8 rounded-full flex items-center justify-center font-bold text-white shrink-0">1</span>
-                            <div><strong>The Index Card:</strong> Take a card with 3 functional chunks (e.g., "Speaking of...", "To be honest...").</div>
-                        </li>
-                        <li class="flex gap-4">
-                            <span class="bg-pink-500 w-8 h-8 rounded-full flex items-center justify-center font-bold text-white shrink-0">2</span>
-                            <div><strong>The Walk:</strong> We are heading outside. Maintain a natural conversation.</div>
-                        </li>
-                        <li class="flex gap-4">
-                            <span class="bg-pink-500 w-8 h-8 rounded-full flex items-center justify-center font-bold text-white shrink-0">3</span>
-                            <div><strong>The Goal:</strong> Seamlessly drop all three of your chunks into the conversation.</div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="flex-1 glass p-4 rounded-2xl relative">
-                    <img src="https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=800&q=80" alt="Walking" class="rounded-xl w-full h-auto object-cover shadow-2xl">
-                    <div class="absolute -bottom-6 -left-6 bg-yellow-400 text-black font-bold p-6 rounded-xl shadow-xl transform -rotate-6 text-xl">
-                        Lowers the affective filter!
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 9: Conclusion -->
-        <div class="slide">
-            <div class="glass p-16 rounded-3xl text-center max-w-4xl w-full relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-br from-sky-500/20 to-pink-500/20 z-0"></div>
-                <div class="relative z-10">
-                    <i data-lucide="rocket" class="w-20 h-20 mx-auto text-sky-400 mb-6"></i>
-                    <h1 class="text-6xl font-extrabold mb-8 text-white">Conclusion & Q&A</h1>
-                    
-                    <div class="bg-black/30 p-8 rounded-2xl mb-8 border border-white/10">
-                        <p class="text-2xl text-gray-200 mb-4">
-                            <span class="text-pink-400 font-bold">"Learning without grammar"</span> prioritizes student fluency and confidence.
-                        </p>
-                        <p class="text-xl text-gray-400 italic">
-                            This aligns perfectly with the dynamic, off-site clubs at One English.
-                        </p>
-                    </div>
-
-                    <h2 class="text-3xl text-sky-400 font-bold uppercase tracking-wide">Call to Action:</h2>
-                    <p class="text-2xl text-white mt-4 font-light">
-                        Challenge yourself to plan your <strong>next off-site club</strong> entirely around specific lexical chunks!
-                    </p>
-                </div>
-            </div>
-        </div>
-
     </div>
 
     <script>
-        // Initialize Icons
         lucide.createIcons();
-
-        // Slide State
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
-        const progressBar = document.getElementById('progress-bar');
-
-        // Presenter Notes Content
+        
         const presenterNotes = [
-            // Slide 1
-            `<p class="mb-4"><strong class="text-white">Objective:</strong> Shift the teachers' mindset from grammar-first to vocabulary-first.</p>
-             <ul class="list-disc pl-5 space-y-2">
-                 <li><strong>The Opening Quote:</strong> Display the quote prominently. Read it aloud.</li>
-                 <li><strong>The Explanation:</strong> Explain that natural vocabulary existed before grammar rules. Humans communicated through phrases; grammar was invented later to categorize spoken language.</li>
-                 <li>Emphasize that vocabulary drives meaning—students with vocabulary but no grammar can communicate, while those with perfect grammar but no vocabulary cannot.</li>
-             </ul>`,
-            // Slide 2
-            `<p class="mb-4"><strong class="text-white">Objective:</strong> Standardize the conversation club methodology and analyze real-world scenarios.</p>
-             <ul class="list-disc pl-5 space-y-2">
-                 <li><strong>Our Methodology:</strong> Explain that One English Tepic clubs are immersive experiences, not traditional classroom sessions.</li>
-                 <li>Set the stage for the next few slides: We are going to look at actual photos from past off-site conversation clubs.</li>
-             </ul>`,
-            // Slide 3
-            `<p class="mb-4"><strong class="text-white">Interactive Element:</strong> Do not reveal the chunks immediately!</p>
-             <ul class="list-disc pl-5 space-y-2">
-                 <li>Ask the audience: <em class="text-sky-300">"Look at this photo. What chunks would students need right here in this exact moment?"</em></li>
-                 <li>Let them shout out answers.</li>
-                 <li>Click <strong>"Reveal Chunks"</strong> to show the target answers: "Is it a boy or a girl?", "Can I hold him?", "He's so well-behaved."</li>
-             </ul>`,
-            // Slide 4
-            `<p class="mb-4"><strong class="text-white">Interactive Element:</strong> Keep the audience engaged. Ask for answers before clicking.</p>
-             <ul class="list-disc pl-5 space-y-2">
-                 <li>Ask: <em class="text-sky-300">"Karaoke night. High energy. What are the essential phrases?"</em></li>
-                 <li>Click <strong>"Reveal Chunks"</strong>. Target answers: "What's your go-to song?", "I'm up next", "You nailed it!"</li>
-             </ul>`,
-            // Slide 5
-            `<p class="mb-4"><strong class="text-white">Interactive Element:</strong> Final photo analysis.</p>
-             <ul class="list-disc pl-5 space-y-2">
-                 <li>Ask: <em class="text-sky-300">"Ordering food. This is classic. What chunks do they need to sound natural, not like a textbook?"</em></li>
-                 <li>Click <strong>"Reveal Chunks"</strong>. Target answers: "Could we get the check, please?", "I'll have what he's having", "Does this come with fries?"</li>
-             </ul>`,
-            // Slide 6
-            `<p class="mb-4"><strong class="text-white">Objective:</strong> Define the concept clearly and show the contrast.</p>
-             <ul class="list-disc pl-5 space-y-2">
-                 <li><strong>Definition:</strong> Define lexical chunks clearly. Emphasize "single unit of meaning".</li>
-                 <li><strong>The Contrast:</strong> Walk them through the visual on screen. Traditional approach is like doing math in your head. Chunk approach is like using pre-built lego blocks.</li>
-                 <li>Briefly cover categories like greetings, transitions, and polite requests to show variety.</li>
-             </ul>`,
-            // Slide 7
-            `<p class="mb-4"><strong class="text-white">Objective:</strong> Have teachers practice designing off-site clubs anchored by specific lexical chunks.</p>
-             <ul class="list-disc pl-5 space-y-2">
-                 <li><strong>The Task:</strong> Group them up. Tell them they are designing next month's special conversation clubs.</li>
-                 <li>Give them 5-7 minutes to brainstorm.</li>
-                 <li><strong>Group Presentation:</strong> Have each group briefly pitch their club idea and present the core chunks they selected.</li>
-             </ul>`,
-            // Slide 8
-            `<p class="mb-4"><strong class="text-white">Objective:</strong> Demonstrate how movement and a change of scenery help cement vocabulary and lower the affective filter.</p>
-             <ul class="list-disc pl-5 space-y-2">
-                 <li><strong>The Dynamic:</strong> Hand out the pre-prepared index cards right now.</li>
-                 <li>Instruct everyone to stand up. We are actually leaving the room!</li>
-                 <li><strong>The Debrief (Later):</strong> Bring them back and discuss how mimicking the physical movement of an off-site club lowers student anxiety and encourages fluency.</li>
-             </ul>`,
-            // Slide 9
-            `<p class="mb-4"><strong class="text-white">Objective:</strong> Summarize the core message and commit to action.</p>
-             <ul class="list-disc pl-5 space-y-2">
-                 <li><strong>The Takeaway:</strong> Reiterate the core philosophy.</li>
-                 <li><strong>Call to Action:</strong> Leave them with this specific challenge. Thank them for their time and open the floor to any final questions.</li>
-             </ul>`
+            "Intro: Welcome teachers, emphasize the 'grammaticalised lexis' quote.",
+            "Philosophy: Explain why vocabulary must come before rules.",
+            "Shelter Activity: Facilitate group discussion on chunk extraction.",
+            "Karaoke Activity: Focus on high-energy, social phrases.",
+            "Participation: Set timer for 5 minutes for group brainstorming.",
+            "Conclusion: Final call to action for their next off-site club."
         ];
 
         function updateSlide() {
-            slides.forEach((slide, index) => {
-                if(index === currentSlide) {
-                    slide.classList.add('active');
-                } else {
-                    slide.classList.remove('active');
-                    // Reset chunks if moving away
-                    const chunks = slide.querySelectorAll('.chunk-item');
-                    chunks.forEach(c => c.classList.remove('revealed'));
-                }
-            });
-
-            // Update Progress bar
-            const progress = ((currentSlide + 1) / slides.length) * 100;
-            progressBar.style.width = `${progress}%`;
-
-            // Update Notes Content
-            document.getElementById('notes-content').innerHTML = presenterNotes[currentSlide];
+            slides.forEach((slide, i) => slide.classList.toggle('active', i === currentSlide));
+            document.getElementById('progress-bar').style.width = `${((currentSlide+1)/slides.length)*100}%`;
+            document.getElementById('notes-content').innerHTML = presenterNotes[currentSlide] || "No notes.";
         }
 
-        function nextSlide() {
-            if (currentSlide < slides.length - 1) {
-                currentSlide++;
-                updateSlide();
-            }
+        function nextSlide() { if(currentSlide < slides.length - 1) { currentSlide++; updateSlide(); } }
+        function prevSlide() { if(currentSlide > 0) { currentSlide--; updateSlide(); } }
+        function toggleNotes() { document.getElementById('notes-panel').classList.toggle('open'); }
+        function revealChunks(btn) { 
+            btn.nextElementSibling.querySelectorAll('.chunk-item').forEach(c => c.classList.add('revealed'));
+            btn.classList.add('hidden');
         }
 
-        function prevSlide() {
-            if (currentSlide > 0) {
-                currentSlide--;
-                updateSlide();
-            }
+        function startTimer(m) {
+            let time = m * 60;
+            const display = document.getElementById('timer-display');
+            setInterval(() => {
+                let minutes = Math.floor(time / 60);
+                let seconds = time % 60;
+                display.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if(time > 0) time--;
+            }, 1000);
         }
 
-        // Notes Toggle Logic
-        let notesOpen = false;
-        function toggleNotes() {
-            const panel = document.getElementById('notes-panel');
-            notesOpen = !notesOpen;
-            if(notesOpen) {
-                panel.classList.add('open');
-                document.getElementById('btn-notes').style.background = 'rgba(236,72,153,0.5)'; // Pink active state
-            } else {
-                panel.classList.remove('open');
-                document.getElementById('btn-notes').style.background = 'rgba(255,255,255,0.1)';
-            }
-        }
-
-        // Reveal Chunks Logic
-        function revealChunks(btn) {
-            const container = btn.nextElementSibling;
-            const chunks = container.querySelectorAll('.chunk-item');
-            
-            chunks.forEach((chunk, index) => {
-                setTimeout(() => {
-                    chunk.classList.add('revealed');
-                }, index * 300); // 300ms stagger effect
-            });
-            
-            // Optional: hide or dim the button after clicking
-            btn.classList.add('opacity-50');
-            btn.innerHTML = 'Chunks Revealed <i data-lucide="check" class="inline ml-2"></i>';
-            lucide.createIcons(); // Re-init icon
-        }
-
-        // Keyboard Navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight' || e.key === 'Space') {
-                nextSlide();
-            } else if (e.key === 'ArrowLeft') {
-                prevSlide();
-            } else if (e.key === 'n') {
-                toggleNotes();
-            }
+        document.addEventListener('keydown', e => {
+            if(e.key === 'ArrowRight') nextSlide();
+            if(e.key === 'ArrowLeft') prevSlide();
         });
 
-        // Init First Slide Notes
         updateSlide();
-
+        
+        // Particle Engine
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        function animate() {
+            ctx.clearRect(0,0, canvas.width, canvas.height);
+            requestAnimationFrame(animate);
+        }
+        animate();
     </script>
 </body>
 </html>
